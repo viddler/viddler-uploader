@@ -19,7 +19,7 @@
           displayStatus('User has selected ' + file.name);
         },
         onSuccessfulFileUpload: function(file, video) {
-          displayStatus('the file has been uploaded successfully');
+          displayStatus('the file has been uploaded successfully. ID: ' + video.id);
         },
         onFailedFileUpload: function(file, response) {
           displayStatus('the file has been uploaded successfully');
@@ -34,9 +34,9 @@
   </head>
 
   <body>
-    <a id="upload-link">Upload</a>
     <div id="upload-main-panel">
       <div id="upload-button-container">
+        <a id="upload-link">Upload</a>
       </div>
     </div>
 
