@@ -1,22 +1,19 @@
 (function() {
   window.VideoUploader = (function() {
     function VideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8, _base9;
+      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7;
       if (options == null) {
         options = {};
       }
       this.options = options;
       (_base = this.options).fileUploadButtonId || (_base.fileUploadButtonId = "file-upload-button");
-      (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
-      (_base2 = this.options).buttonContainerId || (_base2.buttonContainerId = "upload-button-container");
-      (_base3 = this.options).uploadMainPanelId || (_base3.uploadMainPanelId = "upload-main-panel");
-      (_base4 = this.options).postParams || (_base4.postParams = {});
-      (_base5 = this.options).onSuccessfulFileUpload || (_base5.onSuccessfulFileUpload = function(file, video) {});
-      (_base6 = this.options).onFailedFileUpload || (_base6.onFailedFileUpload = function(file, response) {});
-      (_base7 = this.options).onUploadProgress || (_base7.onUploadProgress = function(up, file) {});
-      (_base8 = this.options).onSelect || (_base8.onSelect = function(file) {});
-      (_base9 = this.options).onUploadCancelled || (_base9.onUploadCancelled = function(row) {});
-      this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
+      (_base1 = this.options).buttonContainerId || (_base1.buttonContainerId = "upload-button-container");
+      (_base2 = this.options).uploadMainPanelId || (_base2.uploadMainPanelId = "upload-main-panel");
+      (_base3 = this.options).onSuccessfulFileUpload || (_base3.onSuccessfulFileUpload = function(file, video) {});
+      (_base4 = this.options).onFailedFileUpload || (_base4.onFailedFileUpload = function(file, response) {});
+      (_base5 = this.options).onUploadProgress || (_base5.onUploadProgress = function(up, file) {});
+      (_base6 = this.options).onSelect || (_base6.onSelect = function(file) {});
+      (_base7 = this.options).onUploadCancelled || (_base7.onUploadCancelled = function(row) {});
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
       this.uploadTokenAndEndpoint = {
@@ -26,7 +23,6 @@
       if (!this.uploadTokenAndEndpoint.token) {
         this.getUploadTokenAndEndpointForNextRequest();
       }
-      this.averageUploadSpeedData = {};
       this.setupEvents();
       this.initializeFileUpload();
       this.tornDown = false;
@@ -34,18 +30,6 @@
     }
 
     VideoUploader.prototype.setupEvents = function() {
-      $(document).on("click", ".remove-from-list", function(e) {
-        var removedIds, row;
-        e.preventDefault();
-        row = $(this).parents(".svi");
-        if (row.data('encode')) {
-          removedIds = $.jStorage.get("upload:removed-encode-ids", []);
-          removedIds.push(row.data('encode').encode_id);
-          $.jStorage.set("upload:removed-encode-ids", removedIds);
-          $.jStorage.setTTL("mykey", 345600000);
-        }
-        return row.hide("slow");
-      });
       this.mainUploadPanel.bind('dragover', (function(_this) {
         return function() {
           return _this.mainUploadPanel.addClass('dragover');
@@ -89,7 +73,6 @@
       this.uploader.bind('BeforeUpload', (function(_this) {
         return function(up, file) {
           up.settings.url = _this.uploadTokenAndEndpoint.endpoint;
-          $.extend(up.settings.multipart_params, _this.options.postParams);
           $.extend(up.settings.multipart_params, {
             uploadtoken: _this.uploadTokenAndEndpoint.token
           });
@@ -162,40 +145,6 @@
     VideoUploader.prototype.reEnableUploadButton = function() {
       this.disabled = false;
       return this.fileUploadButton.removeClass('disabled');
-    };
-
-    VideoUploader.prototype.distanceOfTimeInWords = function(seconds) {
-      var string, unit, value;
-      if (seconds < 60) {
-        unit = "second";
-        value = seconds;
-      } else if (seconds < 3600) {
-        unit = "minute";
-        value = seconds / 60;
-      } else {
-        unit = "hour";
-        value = seconds / 60 / 60;
-      }
-      value = Math.round(value);
-      string = "" + value + " " + unit;
-      if (value !== 1) {
-        string += "s";
-      }
-      return string;
-    };
-
-    VideoUploader.prototype.averageUploadSpeed = function(uploadId, currentSpeed) {
-      var values, _base;
-      values = (_base = this.averageUploadSpeedData)[uploadId] || (_base[uploadId] = []);
-      if (values.length > 20) {
-        values.shift();
-      }
-      values.push(currentSpeed);
-      if (values.length > 5) {
-        return values.avg();
-      } else {
-        return null;
-      }
     };
 
     VideoUploader.prototype.tearDown = function() {

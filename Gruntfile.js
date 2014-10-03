@@ -7,13 +7,14 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          'src/upload.js': 'src/uploader.js.coffee'
+          'src/upload.js': 'src/uploader.js.coffee',
+          'src/uploader-gui.js': 'src/uploader-gui.js.coffee',
         }
       }
     },
     concat: {
       dist: {
-        src: ['src/upload.js','src/lib/plupload/js/plupload.full.min.js'],
+        src: ['src/upload.js', 'src/uploader-gui.js', 'src/lib/plupload/js/plupload.full.min.js'],
         dest: 'js/upload.js',
       }
     },

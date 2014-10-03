@@ -1,22 +1,19 @@
 (function() {
   window.VideoUploader = (function() {
     function VideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8, _base9;
+      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7;
       if (options == null) {
         options = {};
       }
       this.options = options;
       (_base = this.options).fileUploadButtonId || (_base.fileUploadButtonId = "file-upload-button");
-      (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
-      (_base2 = this.options).buttonContainerId || (_base2.buttonContainerId = "upload-button-container");
-      (_base3 = this.options).uploadMainPanelId || (_base3.uploadMainPanelId = "upload-main-panel");
-      (_base4 = this.options).postParams || (_base4.postParams = {});
-      (_base5 = this.options).onSuccessfulFileUpload || (_base5.onSuccessfulFileUpload = function(file, video) {});
-      (_base6 = this.options).onFailedFileUpload || (_base6.onFailedFileUpload = function(file, response) {});
-      (_base7 = this.options).onUploadProgress || (_base7.onUploadProgress = function(up, file) {});
-      (_base8 = this.options).onSelect || (_base8.onSelect = function(file) {});
-      (_base9 = this.options).onUploadCancelled || (_base9.onUploadCancelled = function(row) {});
-      this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
+      (_base1 = this.options).buttonContainerId || (_base1.buttonContainerId = "upload-button-container");
+      (_base2 = this.options).uploadMainPanelId || (_base2.uploadMainPanelId = "upload-main-panel");
+      (_base3 = this.options).onSuccessfulFileUpload || (_base3.onSuccessfulFileUpload = function(file, video) {});
+      (_base4 = this.options).onFailedFileUpload || (_base4.onFailedFileUpload = function(file, response) {});
+      (_base5 = this.options).onUploadProgress || (_base5.onUploadProgress = function(up, file) {});
+      (_base6 = this.options).onSelect || (_base6.onSelect = function(file) {});
+      (_base7 = this.options).onUploadCancelled || (_base7.onUploadCancelled = function(row) {});
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
       this.uploadTokenAndEndpoint = {
@@ -26,7 +23,6 @@
       if (!this.uploadTokenAndEndpoint.token) {
         this.getUploadTokenAndEndpointForNextRequest();
       }
-      this.averageUploadSpeedData = {};
       this.setupEvents();
       this.initializeFileUpload();
       this.tornDown = false;
@@ -34,18 +30,6 @@
     }
 
     VideoUploader.prototype.setupEvents = function() {
-      $(document).on("click", ".remove-from-list", function(e) {
-        var removedIds, row;
-        e.preventDefault();
-        row = $(this).parents(".svi");
-        if (row.data('encode')) {
-          removedIds = $.jStorage.get("upload:removed-encode-ids", []);
-          removedIds.push(row.data('encode').encode_id);
-          $.jStorage.set("upload:removed-encode-ids", removedIds);
-          $.jStorage.setTTL("mykey", 345600000);
-        }
-        return row.hide("slow");
-      });
       this.mainUploadPanel.bind('dragover', (function(_this) {
         return function() {
           return _this.mainUploadPanel.addClass('dragover');
@@ -89,7 +73,6 @@
       this.uploader.bind('BeforeUpload', (function(_this) {
         return function(up, file) {
           up.settings.url = _this.uploadTokenAndEndpoint.endpoint;
-          $.extend(up.settings.multipart_params, _this.options.postParams);
           $.extend(up.settings.multipart_params, {
             uploadtoken: _this.uploadTokenAndEndpoint.token
           });
@@ -164,7 +147,114 @@
       return this.fileUploadButton.removeClass('disabled');
     };
 
-    VideoUploader.prototype.distanceOfTimeInWords = function(seconds) {
+    VideoUploader.prototype.tearDown = function() {
+      return this.uploader.destroy();
+    };
+
+    return VideoUploader;
+
+  })();
+
+}).call(this);
+
+(function() {
+  window.VideoUploaderGui = (function() {
+    function VideoUploaderGui(options) {
+      var _base;
+      if (options == null) {
+        options = {};
+      }
+      this.uploader = options.uploader;
+      this.options = options;
+      (_base = this.options).listingContainerId || (_base.listingContainerId = "uploaded-videos-listing-container");
+      this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
+      this.averageUploadSpeedData = {};
+      this.addEventListeners();
+    }
+
+    VideoUploaderGui.prototype.addEventListeners = function() {
+      $(document).on("click", ".remove-from-list", function(e) {
+        var row;
+        e.preventDefault();
+        row = $(this).parents(".svi");
+        return row.hide("slow");
+      });
+      this.uploader.options.onSelect = (function(_this) {
+        return function(file) {
+          var cancel_link, fileName, row;
+          fileName = _this.truncate(file.name, 50);
+          row = _this.uploadVideoTemplate.clone();
+          row.attr("id", "upload-" + file.id);
+          row.find(".encode-title").text(fileName);
+          cancel_link = row.find('.cancel-upload');
+          cancel_link.show();
+          cancel_link.click(function(e) {
+            var self;
+            e.preventDefault();
+            if (!confirm("Are you sure you want to cancel this upload?")) {
+              return false;
+            }
+            _this.uploader.removeFile(file);
+            _this.options.onUploadCancelled();
+            _this.runNextUpload();
+            self = _this;
+            return $(e.target).parents('.svi').fadeOut('normal', function() {
+              $(this).remove();
+              return self.uploader.fileUploadButton.trigger('resize');
+            });
+          });
+          _this.uploadVideoTemplate.after(row);
+          row.addClass("uploading");
+          row.show();
+          return row.trigger('resize');
+        };
+      })(this);
+      this.uploader.options.onUploadProgress = (function(_this) {
+        return function(up, file) {
+          var averageSpeed, bytesRemaining, percentage, progress_bar, row, secondsRemaining, speed, statusText, targetWidth;
+          percentage = file.percent;
+          speed = up.total.bytesPerSec;
+          row = $("#upload-" + file.id);
+          if (percentage >= 99) {
+            statusText = "Finalizing upload";
+          } else {
+            if (speed > 0 && (averageSpeed = _this.averageUploadSpeed(file.id, speed))) {
+              bytesRemaining = file.size - file.loaded;
+              secondsRemaining = bytesRemaining / averageSpeed;
+              statusText = "Uploading - " + (_this.distanceOfTimeInWords(secondsRemaining)) + " remaining";
+            } else {
+              statusText = "Uploading";
+            }
+          }
+          row.find(".status").html(statusText);
+          progress_bar = row.find(".progress-bar-inner");
+          targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100));
+          if ((progress_bar.data('targetWidth') || 0) < targetWidth && !progress_bar.is(':animated')) {
+            progress_bar.data('targetWidth', targetWidth);
+            return progress_bar.animate({
+              width: targetWidth
+            }, 500);
+          }
+        };
+      })(this);
+      this.uploader.options.onSuccessfulFileUpload = (function(_this) {
+        return function(file, video) {
+          var message, row;
+          row = $("#upload-" + file.id);
+          row.attr("data-video-id", video.id);
+          return message = "Adding to encoding queue";
+        };
+      })(this);
+      return this.uploader.options.onFailedFileUpload = function(file, response) {
+        var message, row;
+        row = $("#upload-" + file.id);
+        row.find(".remove-from-list").show();
+        message = "Upload failed - " + responseJson.error.details;
+        return row.find('.progress-bar').removeClass('animated').addClass('transparent').children().fadeOut();
+      };
+    };
+
+    VideoUploaderGui.prototype.distanceOfTimeInWords = function(seconds) {
       var string, unit, value;
       if (seconds < 60) {
         unit = "second";
@@ -184,7 +274,14 @@
       return string;
     };
 
-    VideoUploader.prototype.averageUploadSpeed = function(uploadId, currentSpeed) {
+    VideoUploaderGui.prototype.truncate = function(text, limit) {
+      if (text.length > limit) {
+        text = text.substr(0, limit - 3) + "...";
+      }
+      return text;
+    };
+
+    VideoUploaderGui.prototype.averageUploadSpeed = function(uploadId, currentSpeed) {
       var values, _base;
       values = (_base = this.averageUploadSpeedData)[uploadId] || (_base[uploadId] = []);
       if (values.length > 20) {
@@ -192,17 +289,24 @@
       }
       values.push(currentSpeed);
       if (values.length > 5) {
-        return values.avg();
+        return this.mean(values);
       } else {
         return null;
       }
     };
 
-    VideoUploader.prototype.tearDown = function() {
-      return this.uploader.destroy();
+    VideoUploaderGui.prototype.mean = function(array) {
+      var sum;
+      if (array.length === 0) {
+        return 0;
+      }
+      sum = array.reduce(function(s, i) {
+        return s += i;
+      });
+      return sum / array.length;
     };
 
-    return VideoUploader;
+    return VideoUploaderGui;
 
   })();
 

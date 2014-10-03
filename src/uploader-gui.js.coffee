@@ -1,13 +1,23 @@
 class window.VideoUploaderGui
-  constructor: (uploader, options={})->
-    @uploader = uploader
+  constructor: (options={})->
+    @uploader = options.uploader
     @options = options
+
+    @options.listingContainerId     or= "uploaded-videos-listing-container"
+    @uploadVideoTemplate    = $("##{@options.listingContainerId} .upload-video-template")
+
+    @averageUploadSpeedData = {}
 
     @addEventListeners()
 
   addEventListeners: ->
-    @uploader.onSelect = (file)->
-      fileName = window.truncate(file.name, 50)
+    $(document).on "click", ".remove-from-list", (e)->
+      e.preventDefault()
+      row = $(this).parents(".svi")
+      row.hide("slow")
+
+    @uploader.options.onSelect = (file)=>
+      fileName = @truncate(file.name, 50)
       row = @uploadVideoTemplate.clone()
       row.attr("id", "upload-#{file.id}")
       row.find(".encode-title").text(fileName)
@@ -26,14 +36,14 @@ class window.VideoUploaderGui
         self = this
         $(e.target).parents('.svi').fadeOut 'normal', ->
           $(this).remove()
-          self.fileUploadButton.trigger('resize')
+          self.uploader.fileUploadButton.trigger('resize')
 
       @uploadVideoTemplate.after(row)
       row.addClass("uploading")
       row.show()
       row.trigger('resize')
 
-    @uploader.onUploadProgress = (up, file)->
+    @uploader.options.onUploadProgress = (up, file)=>
       percentage = file.percent
       speed      = up.total.bytesPerSec
       row = $("#upload-#{file.id}")
@@ -56,13 +66,13 @@ class window.VideoUploaderGui
           width: targetWidth
         }, 500)
 
-    @onSuccessfulFileUpload = (file, video)->
+    @uploader.options.onSuccessfulFileUpload = (file, video)=>
       row = $("#upload-#{file.id}")
-      row.attr("data-video-id", responseJson.video.id)
+      row.attr("data-video-id", video.id)
       message = "Adding to encoding queue"
 
 
-    @onFailedFileUpload = (file, response)->
+    @uploader.options.onFailedFileUpload = (file, response)->
       row = $("#upload-#{file.id}")
       row.find(".remove-from-list").show()
       message = "Upload failed - #{responseJson.error.details}"
@@ -71,3 +81,42 @@ class window.VideoUploaderGui
         .addClass('transparent')
         .children()
           .fadeOut()
+
+  distanceOfTimeInWords: (seconds)->
+    if seconds < 60
+      unit = "second"
+      value = seconds
+    else if seconds < 3600
+      unit = "minute"
+      value = seconds / 60
+    else
+      unit = "hour"
+      value = seconds / 60 / 60
+    value = Math.round(value)
+    string = "#{value} #{unit}"
+    string += "s" unless value == 1
+    return string
+
+  truncate: (text, limit)->
+    if (text.length > limit)
+      text = text.substr(0, limit - 3) + "..."
+    text
+
+
+
+  # Because the seconds remaining for an upload jumps radically in both directions as
+  # speed changes, this function records the n previous values and gives a more averaged out value
+  # so the progress has a more steady feel to it.
+  averageUploadSpeed: (uploadId, currentSpeed)->
+    values = @averageUploadSpeedData[uploadId] or= []
+    values.shift() if values.length > 20
+    values.push(currentSpeed)
+    if values.length > 5
+      @mean(values)
+    else
+      return null
+
+  mean: (array)->
+    return 0 if array.length is 0
+    sum = array.reduce (s,i) -> s += i
+    sum / array.length
