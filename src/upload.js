@@ -64,7 +64,7 @@
         runtimes: runtimes,
         browse_button: this.options.fileUploadButtonId,
         container: this.options.buttonContainerId,
-        url: this.uploadTokenAndEndpoint.endpoint,
+        url: 'http://temp',
         flash_swf_url: this.fileUploadButton.data('swf-url'),
         multipart: true,
         multipart_params: {},

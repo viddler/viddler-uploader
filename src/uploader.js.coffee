@@ -47,11 +47,13 @@ class window.VideoUploader
       runtimes : runtimes
       browse_button : @options.fileUploadButtonId
       container: @options.buttonContainerId
-      url: @uploadTokenAndEndpoint.endpoint
+      #url: @uploadTokenAndEndpoint.endpoint
+      url: 'http://temp'
       flash_swf_url: @fileUploadButton.data('swf-url')
       multipart: true
       multipart_params : {}
       drop_element: @options.uploadMainPanelId
+
 
     @uploader.init()
 
