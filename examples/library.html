@@ -7,9 +7,26 @@
     <script type="text/javascript" src="../js/upload.js"></script>
     <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
+      function displayStatus(text) {
+        var status = $('<p>').text(text);
+        $('#status-log').append(status);
+      }
+
       var uploader = new VideoUploader({
         fileUploadButtonId: 'upload-link',
-        apiEndPoint: '/server_components/php/index.php'
+        apiEndPoint: '/server_components/php/index.php',
+        onSelect: function(file) {
+          displayStatus('User has selected ' + file.name);
+        },
+        onSuccessfulFileUpload: function(file, video) {
+          displayStatus('the file has been uploaded successfully');
+        },
+        onFailedFileUpload: function(file, response) {
+          displayStatus('the file has been uploaded successfully');
+        },
+        onUploadProgress: function(up, file) {
+          displayStatus('Uploading file: percent: '+ file.percent + ' ; bytes per second: ' + up.total.bytesPerSec );
+        },
       });
     });
 
@@ -20,10 +37,9 @@
     <a id="upload-link">Upload</a>
     <div id="upload-main-panel">
       <div id="upload-button-container">
-        <p id="status-text"></p>
       </div>
     </div>
 
+    <p id="status-log"></p>
   </body>
-
 </html>

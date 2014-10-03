@@ -1,7 +1,7 @@
 (function() {
   window.VideoUploader = (function() {
     function VideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8;
+      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8, _base9;
       if (options == null) {
         options = {};
       }
@@ -11,10 +11,11 @@
       (_base2 = this.options).buttonContainerId || (_base2.buttonContainerId = "upload-button-container");
       (_base3 = this.options).uploadMainPanelId || (_base3.uploadMainPanelId = "upload-main-panel");
       (_base4 = this.options).postParams || (_base4.postParams = {});
-      (_base5 = this.options).onSuccessfulFileUpload || (_base5.onSuccessfulFileUpload = function(row, video) {});
-      (_base6 = this.options).onSelect || (_base6.onSelect = function() {});
-      (_base7 = this.options).onUploadCancelled || (_base7.onUploadCancelled = function(row) {});
-      (_base8 = this.options).onUploadComplete || (_base8.onUploadComplete = function(row) {});
+      (_base5 = this.options).onSuccessfulFileUpload || (_base5.onSuccessfulFileUpload = function(file, video) {});
+      (_base6 = this.options).onFailedFileUpload || (_base6.onFailedFileUpload = function(file, response) {});
+      (_base7 = this.options).onUploadProgress || (_base7.onUploadProgress = function(up, file) {});
+      (_base8 = this.options).onSelect || (_base8.onSelect = function(file) {});
+      (_base9 = this.options).onUploadCancelled || (_base9.onUploadCancelled = function(row) {});
       this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
@@ -74,37 +75,11 @@
       this.uploader.bind('FilesAdded', (function(_this) {
         return function(up, files) {
           $.each(files.reverse(), function(i, file) {
-            var cancel_link, fileName, row;
             if (_this.disabled) {
               _this.uploader.removeFile(file);
               return;
             }
-            _this.options.onSelect();
-            fileName = window.truncate(file.name, 50);
-            row = _this.uploadVideoTemplate.clone();
-            row.attr("id", "upload-" + file.id);
-            row.find(".encode-title").text(fileName);
-            cancel_link = row.find('.cancel-upload');
-            cancel_link.show();
-            cancel_link.click(function(e) {
-              var self;
-              e.preventDefault();
-              if (!confirm("Are you sure you want to cancel this upload?")) {
-                return false;
-              }
-              _this.uploader.removeFile(file);
-              _this.options.onUploadCancelled();
-              _this.runNextUpload();
-              self = _this;
-              return $(e.target).parents('.svi').fadeOut('normal', function() {
-                $(this).remove();
-                return self.fileUploadButton.trigger('resize');
-              });
-            });
-            _this.uploadVideoTemplate.after(row);
-            row.addClass("uploading");
-            row.show();
-            return row.trigger('resize');
+            return _this.options.onSelect(file);
           });
           if (_this.uploadTokenAndEndpoint) {
             return _this.uploader.start();
@@ -124,52 +99,17 @@
       })(this));
       this.uploader.bind('UploadProgress', (function(_this) {
         return function(up, file) {
-          var averageSpeed, bytesRemaining, percentage, progress_bar, row, secondsRemaining, speed, statusText, targetWidth;
-          percentage = file.percent;
-          speed = up.total.bytesPerSec;
-          row = $("#upload-" + file.id);
-          if (percentage >= 99) {
-            statusText = "Finalizing upload";
-          } else {
-            if (speed > 0 && (averageSpeed = _this.averageUploadSpeed(file.id, speed))) {
-              bytesRemaining = file.size - file.loaded;
-              secondsRemaining = bytesRemaining / averageSpeed;
-              statusText = "Uploading - " + (_this.distanceOfTimeInWords(secondsRemaining)) + " remaining";
-            } else {
-              statusText = "Uploading";
-            }
-          }
-          row.find(".status").html(statusText);
-          progress_bar = row.find(".progress-bar-inner");
-          targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100));
-          if ((progress_bar.data('targetWidth') || 0) < targetWidth && !progress_bar.is(':animated')) {
-            progress_bar.data('targetWidth', targetWidth);
-            return progress_bar.animate({
-              width: targetWidth
-            }, 500);
-          }
+          return _this.options.onUploadProgress(up, file);
         };
       })(this));
       return this.uploader.bind('FileUploaded', (function(_this) {
         return function(up, file, responseObj) {
-          var message, responseJson, row;
+          var responseJson;
           responseJson = JSON.parse(responseObj.response);
-          row = $("#upload-" + file.id);
           if (responseJson.video) {
-            row.attr("data-video-id", responseJson.video.id);
-            message = "Adding to encoding queue";
+            _this.options.onSuccessfulFileUpload(file, responseJson.video);
           } else {
-            row.find(".remove-from-list").show();
-            message = "Upload failed - " + responseJson.error.details;
-            row.find('.progress-bar').removeClass('animated').addClass('transparent').children().fadeOut();
-          }
-          row.find(".status").html(message);
-          row.find(".cancel-upload").hide();
-          row.addClass("completed");
-          row.removeClass("uploading");
-          _this.options.onUploadComplete(row);
-          if (responseJson.video) {
-            _this.options.onSuccessfulFileUpload(row, responseJson.video);
+            _this.options.onFailedFileUpload(file, responseJson);
           }
           return _this.runNextUpload();
         };

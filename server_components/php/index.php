@@ -9,6 +9,10 @@ if($_GET['action'] == 'prepareUpload') {
   $params = array('sessionid' => $auth['auth']['sessionid']);
   $response = $v->viddler_videos_prepareUpload($params);
   header('Content-Type: application/json');
+
+  //Bacause PHP library uses php responses
+  $response['upload']['endpoint'] = str_replace('.php', '.json', $response['upload']['endpoint']);
+
   echo json_encode($response);
 }
 ?>
