@@ -43,7 +43,7 @@ class window.VideoUploader
       @mainUploadPanel.removeClass('dragover')
 
   initializeFileUpload: ->
-    runtimes = $.QueryString.runtime || 'html5,flash'
+    runtimes = 'html5,flash'
     @uploader = new plupload.Uploader
       runtimes : runtimes
       browse_button : @options.fileUploadButtonId

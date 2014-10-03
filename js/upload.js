@@ -62,7 +62,7 @@
 
     VideoUploader.prototype.initializeFileUpload = function() {
       var runtimes;
-      runtimes = $.QueryString.runtime || 'html5,flash';
+      runtimes = 'html5,flash';
       this.uploader = new plupload.Uploader({
         runtimes: runtimes,
         browse_button: this.options.fileUploadButtonId,
