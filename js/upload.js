@@ -45,7 +45,7 @@
     VideoUploader.prototype.initializeFileUpload = function() {
       var runtimes;
       runtimes = 'html5,flash';
-      this.uploader = new plupload.Uploader({
+      this.plupload = new plupload.Uploader({
         runtimes: runtimes,
         browse_button: this.options.fileUploadButtonId,
         container: this.options.buttonContainerId,
@@ -55,22 +55,22 @@
         multipart_params: {},
         drop_element: this.options.uploadMainPanelId
       });
-      this.uploader.init();
-      this.uploader.bind('FilesAdded', (function(_this) {
+      this.plupload.init();
+      this.plupload.bind('FilesAdded', (function(_this) {
         return function(up, files) {
           $.each(files.reverse(), function(i, file) {
             if (_this.disabled) {
-              _this.uploader.removeFile(file);
+              _this.plupload.removeFile(file);
               return;
             }
             return _this.options.onSelect(file);
           });
           if (_this.uploadTokenAndEndpoint) {
-            return _this.uploader.start();
+            return _this.plupload.start();
           }
         };
       })(this));
-      this.uploader.bind('BeforeUpload', (function(_this) {
+      this.plupload.bind('BeforeUpload', (function(_this) {
         return function(up, file) {
           up.settings.url = _this.uploadTokenAndEndpoint.endpoint;
           $.extend(up.settings.multipart_params, {
@@ -80,12 +80,12 @@
           return _this.getUploadTokenAndEndpointForNextRequest();
         };
       })(this));
-      this.uploader.bind('UploadProgress', (function(_this) {
+      this.plupload.bind('UploadProgress', (function(_this) {
         return function(up, file) {
           return _this.options.onUploadProgress(up, file);
         };
       })(this));
-      return this.uploader.bind('FileUploaded', (function(_this) {
+      return this.plupload.bind('FileUploaded', (function(_this) {
         return function(up, file, responseObj) {
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
@@ -100,10 +100,10 @@
     };
 
     VideoUploader.prototype.runNextUpload = function() {
-      this.uploader.stop();
+      this.plupload.stop();
       return this.getUploadTokenAndEndpoint((function(_this) {
         return function(details) {
-          return _this.uploader.start();
+          return _this.plupload.start();
         };
       })(this));
     };
@@ -148,7 +148,7 @@
     };
 
     VideoUploader.prototype.tearDown = function() {
-      return this.uploader.destroy();
+      return this.plupload.destroy();
     };
 
     return VideoUploader;
@@ -160,13 +160,14 @@
 (function() {
   window.VideoUploaderGui = (function() {
     function VideoUploaderGui(options) {
-      var _base;
+      var _base, _base1;
       if (options == null) {
         options = {};
       }
       this.uploader = options.uploader;
       this.options = options;
-      (_base = this.options).listingContainerId || (_base.listingContainerId = "uploaded-videos-listing-container");
+      (_base = this.options).onUploadCancelled || (_base.onUploadCancelled = function() {});
+      (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
       this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
       this.averageUploadSpeedData = {};
       this.addEventListeners();
@@ -194,9 +195,9 @@
             if (!confirm("Are you sure you want to cancel this upload?")) {
               return false;
             }
-            _this.uploader.removeFile(file);
+            _this.uploader.plupload.removeFile(file);
             _this.options.onUploadCancelled();
-            _this.runNextUpload();
+            _this.uploader.runNextUpload();
             self = _this;
             return $(e.target).parents('.video-upload-row').fadeOut('normal', function() {
               $(this).remove();

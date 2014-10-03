@@ -3,6 +3,7 @@ class window.VideoUploaderGui
     @uploader = options.uploader
     @options = options
 
+    @options.onUploadCancelled or= ->
     @options.listingContainerId     or= "uploaded-videos-listing-container"
     @uploadVideoTemplate    = $("##{@options.listingContainerId} .upload-video-template")
 
@@ -29,9 +30,9 @@ class window.VideoUploaderGui
 
         if !confirm("Are you sure you want to cancel this upload?")
           return false
-        @uploader.removeFile(file)
+        @uploader.plupload.removeFile(file)
         @options.onUploadCancelled()
-        @runNextUpload()
+        @uploader.runNextUpload()
 
         self = this
         $(e.target).parents('.video-upload-row').fadeOut 'normal', ->

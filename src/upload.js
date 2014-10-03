@@ -45,7 +45,7 @@
     VideoUploader.prototype.initializeFileUpload = function() {
       var runtimes;
       runtimes = 'html5,flash';
-      this.uploader = new plupload.Uploader({
+      this.plupload = new plupload.Uploader({
         runtimes: runtimes,
         browse_button: this.options.fileUploadButtonId,
         container: this.options.buttonContainerId,
@@ -55,22 +55,22 @@
         multipart_params: {},
         drop_element: this.options.uploadMainPanelId
       });
-      this.uploader.init();
-      this.uploader.bind('FilesAdded', (function(_this) {
+      this.plupload.init();
+      this.plupload.bind('FilesAdded', (function(_this) {
         return function(up, files) {
           $.each(files.reverse(), function(i, file) {
             if (_this.disabled) {
-              _this.uploader.removeFile(file);
+              _this.plupload.removeFile(file);
               return;
             }
             return _this.options.onSelect(file);
           });
           if (_this.uploadTokenAndEndpoint) {
-            return _this.uploader.start();
+            return _this.plupload.start();
           }
         };
       })(this));
-      this.uploader.bind('BeforeUpload', (function(_this) {
+      this.plupload.bind('BeforeUpload', (function(_this) {
         return function(up, file) {
           up.settings.url = _this.uploadTokenAndEndpoint.endpoint;
           $.extend(up.settings.multipart_params, {
@@ -80,12 +80,12 @@
           return _this.getUploadTokenAndEndpointForNextRequest();
         };
       })(this));
-      this.uploader.bind('UploadProgress', (function(_this) {
+      this.plupload.bind('UploadProgress', (function(_this) {
         return function(up, file) {
           return _this.options.onUploadProgress(up, file);
         };
       })(this));
-      return this.uploader.bind('FileUploaded', (function(_this) {
+      return this.plupload.bind('FileUploaded', (function(_this) {
         return function(up, file, responseObj) {
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
@@ -100,10 +100,10 @@
     };
 
     VideoUploader.prototype.runNextUpload = function() {
-      this.uploader.stop();
+      this.plupload.stop();
       return this.getUploadTokenAndEndpoint((function(_this) {
         return function(details) {
-          return _this.uploader.start();
+          return _this.plupload.start();
         };
       })(this));
     };
@@ -148,7 +148,7 @@
     };
 
     VideoUploader.prototype.tearDown = function() {
-      return this.uploader.destroy();
+      return this.plupload.destroy();
     };
 
     return VideoUploader;

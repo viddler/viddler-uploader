@@ -29,7 +29,7 @@ class window.VideoUploader
 
   initializeFileUpload: ->
     runtimes = 'html5,flash'
-    @uploader = new plupload.Uploader
+    @plupload = new plupload.Uploader
       runtimes : runtimes
       browse_button : @options.fileUploadButtonId
       container: @options.buttonContainerId
@@ -41,30 +41,30 @@ class window.VideoUploader
       drop_element: @options.uploadMainPanelId
 
 
-    @uploader.init()
+    @plupload.init()
 
-    @uploader.bind 'FilesAdded', (up, files)=>
+    @plupload.bind 'FilesAdded', (up, files)=>
       $.each files.reverse(), (i, file)=>
         # Do not allow uploads if disabled
         if @disabled
-          @uploader.removeFile(file)
+          @plupload.removeFile(file)
           return
 
         @options.onSelect(file)
-      @uploader.start() if @uploadTokenAndEndpoint
+      @plupload.start() if @uploadTokenAndEndpoint
 
 
-    @uploader.bind 'BeforeUpload', (up, file)=>
+    @plupload.bind 'BeforeUpload', (up, file)=>
       up.settings.url = @uploadTokenAndEndpoint.endpoint
       $.extend(up.settings.multipart_params, {uploadtoken: @uploadTokenAndEndpoint.token})
       @uploadTokenAndEndpoint = undefined
       @getUploadTokenAndEndpointForNextRequest()
 
 
-    @uploader.bind 'UploadProgress', (up, file)=>
+    @plupload.bind 'UploadProgress', (up, file)=>
       @options.onUploadProgress(up, file)
 
-    @uploader.bind 'FileUploaded', (up, file, responseObj)=>
+    @plupload.bind 'FileUploaded', (up, file, responseObj)=>
       responseJson = JSON.parse(responseObj.response)
 
       if responseJson.video
@@ -77,9 +77,9 @@ class window.VideoUploader
 
   runNextUpload: ->
     # Stop the uploader and make sure we have another token ready and then start again
-    @uploader.stop()
+    @plupload.stop()
     @getUploadTokenAndEndpoint (details)=>
-      @uploader.start()
+      @plupload.start()
 
 
   getFreshUploadTokenAndEndpoint: (callback)->
@@ -112,4 +112,4 @@ class window.VideoUploader
 
   # Cancel any existing uploads, stop any recurring processes
   tearDown: ->
-    @uploader.destroy()
+    @plupload.destroy()
