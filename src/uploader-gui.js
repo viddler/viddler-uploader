@@ -17,7 +17,7 @@
       $(document).on("click", ".remove-from-list", function(e) {
         var row;
         e.preventDefault();
-        row = $(this).parents(".svi");
+        row = $(this).parents(".video-upload-row");
         return row.hide("slow");
       });
       this.uploader.options.onSelect = (function(_this) {
@@ -39,7 +39,7 @@
             _this.options.onUploadCancelled();
             _this.runNextUpload();
             self = _this;
-            return $(e.target).parents('.svi').fadeOut('normal', function() {
+            return $(e.target).parents('.video-upload-row').fadeOut('normal', function() {
               $(this).remove();
               return self.uploader.fileUploadButton.trigger('resize');
             });
@@ -68,9 +68,10 @@
             }
           }
           row.find(".status").html(statusText);
-          progress_bar = row.find(".progress-bar-inner");
+          progress_bar = row.find(".progress-bar");
           targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100));
-          if ((progress_bar.data('targetWidth') || 0) < targetWidth && !progress_bar.is(':animated')) {
+          console.log(targetWidth);
+          if ((progress_bar.data('targetWidth') || 0) < targetWidth) {
             progress_bar.data('targetWidth', targetWidth);
             return progress_bar.animate({
               width: targetWidth
@@ -91,7 +92,7 @@
         row = $("#upload-" + file.id);
         row.find(".remove-from-list").show();
         message = "Upload failed - " + responseJson.error.details;
-        return row.find('.progress-bar').removeClass('animated').addClass('transparent').children().fadeOut();
+        return row.find('.progress-bar').width('0%');
       };
     };
 

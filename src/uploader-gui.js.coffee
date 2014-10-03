@@ -13,7 +13,7 @@ class window.VideoUploaderGui
   addEventListeners: ->
     $(document).on "click", ".remove-from-list", (e)->
       e.preventDefault()
-      row = $(this).parents(".svi")
+      row = $(this).parents(".video-upload-row")
       row.hide("slow")
 
     @uploader.options.onSelect = (file)=>
@@ -34,7 +34,7 @@ class window.VideoUploaderGui
         @runNextUpload()
 
         self = this
-        $(e.target).parents('.svi').fadeOut 'normal', ->
+        $(e.target).parents('.video-upload-row').fadeOut 'normal', ->
           $(this).remove()
           self.uploader.fileUploadButton.trigger('resize')
 
@@ -57,10 +57,11 @@ class window.VideoUploaderGui
         else
           statusText = "Uploading"
       row.find(".status").html(statusText)
-      progress_bar = row.find(".progress-bar-inner")
+      progress_bar = row.find(".progress-bar")
       targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100))
+      console.log(targetWidth)
 
-      if (progress_bar.data('targetWidth') || 0) < targetWidth and !progress_bar.is(':animated')
+      if (progress_bar.data('targetWidth') || 0) < targetWidth
         progress_bar.data('targetWidth', targetWidth)
         progress_bar.animate({
           width: targetWidth
@@ -76,11 +77,7 @@ class window.VideoUploaderGui
       row = $("#upload-#{file.id}")
       row.find(".remove-from-list").show()
       message = "Upload failed - #{responseJson.error.details}"
-      row.find('.progress-bar')
-        .removeClass('animated')
-        .addClass('transparent')
-        .children()
-          .fadeOut()
+      row.find('.progress-bar').width('0%')
 
   distanceOfTimeInWords: (seconds)->
     if seconds < 60
