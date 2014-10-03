@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.initConfig({
     coffee: {
@@ -8,7 +9,16 @@ module.exports = function(grunt) {
           'js/upload.js': ['src/uploader.js.coffee']
         }
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: ['**/*.js.coffee'],
+        tasks: ['coffee'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
   });
 
 
