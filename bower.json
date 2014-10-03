@@ -17,6 +17,6 @@
   "dependencies": {
     "plupload": "~2.1.2",
     "underscore": "~1.7.0",
-    "phpviddler": "git@github.com:viddler/phpviddler.git#~4.0.1"
+    "phpviddler": "git@github.com:viddler/phpviddler.git#~4.0.1",
   }
 }
