@@ -1,7 +1,7 @@
 (function() {
   window.VideoUploader = (function() {
     function VideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8, _base9;
+      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7, _base8;
       if (options == null) {
         options = {};
       }
@@ -10,14 +10,11 @@
       (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
       (_base2 = this.options).buttonContainerId || (_base2.buttonContainerId = "upload-button-container");
       (_base3 = this.options).uploadMainPanelId || (_base3.uploadMainPanelId = "upload-main-panel");
-      if ((_base4 = this.options).allow_replace == null) {
-        _base4.allow_replace = false;
-      }
-      (_base5 = this.options).postParams || (_base5.postParams = {});
-      (_base6 = this.options).onSuccessfulFileUpload || (_base6.onSuccessfulFileUpload = function(row, video) {});
-      (_base7 = this.options).onSelect || (_base7.onSelect = function() {});
-      (_base8 = this.options).onUploadCancelled || (_base8.onUploadCancelled = function(row) {});
-      (_base9 = this.options).onUploadComplete || (_base9.onUploadComplete = function(row) {});
+      (_base4 = this.options).postParams || (_base4.postParams = {});
+      (_base5 = this.options).onSuccessfulFileUpload || (_base5.onSuccessfulFileUpload = function(row, video) {});
+      (_base6 = this.options).onSelect || (_base6.onSelect = function() {});
+      (_base7 = this.options).onUploadCancelled || (_base7.onUploadCancelled = function(row) {});
+      (_base8 = this.options).onUploadComplete || (_base8.onUploadComplete = function(row) {});
       this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
@@ -190,10 +187,10 @@
 
     VideoUploader.prototype.getFreshUploadTokenAndEndpoint = function(callback) {
       var url;
-      url = "/upload/new.json?nocache=" + (Math.random()) + "&allow_replace=" + this.options.allow_replace;
+      url = "" + this.options.apiEndPoint + "?action=prepareUpload&nocache=" + (Math.random());
       return $.getJSON(url, (function(_this) {
         return function(details) {
-          _this.uploadTokenAndEndpoint = details;
+          _this.uploadTokenAndEndpoint = details.upload;
           return callback(details);
         };
       })(this));

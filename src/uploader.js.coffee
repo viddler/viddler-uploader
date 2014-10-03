@@ -6,7 +6,6 @@ class window.VideoUploader
     @options.listingContainerId     or= "uploaded-videos-listing-container"
     @options.buttonContainerId      or= "upload-button-container"
     @options.uploadMainPanelId      or= "upload-main-panel"
-    @options.allow_replace          ?= false
     @options.postParams             or = {}
     @options.onSuccessfulFileUpload or= (row, video)->
     @options.onSelect               or= ()->
@@ -156,9 +155,9 @@ class window.VideoUploader
 
 
   getFreshUploadTokenAndEndpoint: (callback)->
-    url = "/upload/new.json?nocache=#{Math.random()}&allow_replace=#{@options.allow_replace}"
+    url = "#{@options.apiEndPoint}?action=prepareUpload&nocache=#{Math.random()}"
     $.getJSON url, (details)=>
-      @uploadTokenAndEndpoint = details
+      @uploadTokenAndEndpoint = details.upload
       callback(details)
 
   # Gets a token the fastest way possible (either a variable we stored earlier, else a fresh one.

@@ -13,7 +13,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['src/upload.js','src/lib/plupload/js/plupload.min.js'],
+        src: ['src/upload.js','src/lib/plupload/js/plupload.full.min.js'],
         dest: 'js/upload.js',
       }
     },
