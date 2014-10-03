@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "grunt-contrib-coffee": "~0.11.1",
-    "grunt": "~0.4.5"
   },
   "devDependencies": {
+    "grunt-contrib-coffee": "~0.11.1",
+    "grunt": "~0.4.5"
     "grunt-contrib-watch": "~0.6.1"
   }
 }
