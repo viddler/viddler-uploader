@@ -1,0 +1,17 @@
+{
+  "name": "viddler-uploader",
+  "version": "0.0.0",
+  "authors": [
+    "Matt Fawcett <fawcett@viddler.com>"
+  ],
+  "description": "A javascript library for HTML5 video uploads",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
