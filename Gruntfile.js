@@ -1,19 +1,26 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
   grunt.initConfig({
     coffee: {
       compile: {
         files: {
-          'js/upload.js': ['src/uploader.js.coffee']
+          'src/upload.js': 'src/uploader.js.coffee'
         }
+      }
+    },
+    concat: {
+      dist: {
+        src: ['src/upload.js','src/lib/plupload/js/plupload.min.js'],
+        dest: 'js/upload.js',
       }
     },
     watch: {
       scripts: {
         files: ['**/*.js.coffee'],
-        tasks: ['coffee'],
+        tasks: ['coffee', 'concat'],
         options: {
           spawn: false,
         },
@@ -24,5 +31,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', 'Compile', function() {
     grunt.task.run('coffee');
+    grunt.task.run('concat');
   });
 };

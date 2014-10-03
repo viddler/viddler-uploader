@@ -1,0 +1,14 @@
+{
+  "name": "phpviddler",
+  "homepage": "https://github.com/viddler/phpviddler",
+  "version": "4.0.1",
+  "_release": "4.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "4.0.1",
+    "commit": "c00d9895a7e11bdac5567e0d0da35ee9f0d3ad25"
+  },
+  "_source": "git@github.com:viddler/phpviddler.git",
+  "_target": "~4.0.1",
+  "_originalSource": "git@github.com:viddler/phpviddler.git"
+}
