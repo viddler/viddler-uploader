@@ -1,24 +1,18 @@
 <script type="text/template" id="tmpl-video-upload-template">
-  <div class="svi svi-progress upload-video-template" style="display: none;">
-    <div class="svi-icon">
-    </div>
-
-    <div class="ljust">
-      <h4 class="encode-title"><span>Uploading:</span></h4>
+  <div class="video-upload-row upload-video-template" style="display: none;">
+    <div class="info">
+      <p class="encode-title"><span>Uploading:</span></p>
       <span class="status">Queued for upload</span>
     </div>
 
-    <div class="rjust">
-      <a href="#" class="red retry-encode" style="display:none;">Retry</a>
-      <a href="#" class="red cancel-upload" style="display:none;">Cancel</a>
+    <div class="actions">
+      <a href="#" class="cancel-upload" style="display:none;">Cancel</a>
     </div>
 
-    <ul>
-      <li>
-        <div class="progress-bar animated">
-          <div class="progress-bar-inner" style="width:0%"></div>
-        </div>
-      </li>
-    </ul>
+    <div class="progress">
+      <div class="progress-bar">
+        <div class="progress-bar-inner" style="width: 0px"></div>
+      </div>
+    </div>
   </div>
 </script>

@@ -9,7 +9,7 @@
       this.options = options;
       (_base = this.options).onUploadCancelled || (_base.onUploadCancelled = function() {});
       (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
-      this.uploadVideoTemplate = $("#" + this.options.listingContainerId + " .upload-video-template");
+      this.uploadVideoTemplate = $(JST['src/templates.html']()).find('tmpl-video-upload-template');
       this.averageUploadSpeedData = {};
       this.addEventListeners();
     }
