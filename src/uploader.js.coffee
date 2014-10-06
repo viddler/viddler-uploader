@@ -99,7 +99,7 @@ class window.VideoUploader
   getUploadTokenAndEndpointForNextRequest: ->
     return if @gettingSpareToken
     @gettingSpareToken = true
-    @getFreshUploadTokenAndEndpoint (details)->
+    @getFreshUploadTokenAndEndpoint (details)=>
       @gettingSpareToken = false
 
   disableUploadButton: ->

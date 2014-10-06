@@ -132,9 +132,11 @@
         return;
       }
       this.gettingSpareToken = true;
-      return this.getFreshUploadTokenAndEndpoint(function(details) {
-        return this.gettingSpareToken = false;
-      });
+      return this.getFreshUploadTokenAndEndpoint((function(_this) {
+        return function(details) {
+          return _this.gettingSpareToken = false;
+        };
+      })(this));
     };
 
     VideoUploader.prototype.disableUploadButton = function() {
