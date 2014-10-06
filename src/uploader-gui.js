@@ -75,7 +75,7 @@
             progress_bar.data('targetWidth', targetWidth);
             return progress_bar.animate({
               width: targetWidth
-            }, 500);
+            }, 100);
           }
         };
       })(this);

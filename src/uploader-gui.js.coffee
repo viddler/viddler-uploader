@@ -65,7 +65,7 @@ class window.VideoUploaderGui
         progress_bar.data('targetWidth', targetWidth)
         progress_bar.animate({
           width: targetWidth
-        }, 500)
+        }, 100)
 
     @uploader.options.onSuccessfulFileUpload = (file, video)=>
       row = $("#upload-#{file.id}")
