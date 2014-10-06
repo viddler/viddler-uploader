@@ -70,14 +70,16 @@ class window.VideoUploaderGui
     @uploader.options.onSuccessfulFileUpload = (file, video)=>
       row = $("#upload-#{file.id}")
       row.attr("data-video-id", video.id)
-      message = "Adding to encoding queue"
+      message = "Upload Complete"
+      row.find(".status").html(message)
+      row.find('.cancel-upload').hide()
 
 
     @uploader.options.onFailedFileUpload = (file, response)->
       row = $("#upload-#{file.id}")
-      row.find(".remove-from-list").show()
-      message = "Upload failed - #{responseJson.error.details}"
+      message = "Upload failed - #{response.error.details}"
       row.find('.progress-bar').width('0%')
+      row.find(".status").html(message)
 
   distanceOfTimeInWords: (seconds)->
     if seconds < 60

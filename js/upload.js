@@ -245,15 +245,17 @@
           var message, row;
           row = $("#upload-" + file.id);
           row.attr("data-video-id", video.id);
-          return message = "Adding to encoding queue";
+          message = "Upload Complete";
+          row.find(".status").html(message);
+          return row.find('.cancel-upload').hide();
         };
       })(this);
       return this.uploader.options.onFailedFileUpload = function(file, response) {
         var message, row;
         row = $("#upload-" + file.id);
-        row.find(".remove-from-list").show();
-        message = "Upload failed - " + responseJson.error.details;
-        return row.find('.progress-bar').width('0%');
+        message = "Upload failed - " + response.error.details;
+        row.find('.progress-bar').width('0%');
+        return row.find(".status").html(message);
       };
     };
 
