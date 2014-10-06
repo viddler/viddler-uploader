@@ -90,20 +90,10 @@
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
           if (responseJson.video) {
-            _this.options.onSuccessfulFileUpload(file, responseJson.video);
+            return _this.options.onSuccessfulFileUpload(file, responseJson.video);
           } else {
-            _this.options.onFailedFileUpload(file, responseJson);
+            return _this.options.onFailedFileUpload(file, responseJson);
           }
-          return _this.runNextUpload();
-        };
-      })(this));
-    };
-
-    VideoUploader.prototype.runNextUpload = function() {
-      this.plupload.stop();
-      return this.getUploadTokenAndEndpoint((function(_this) {
-        return function(details) {
-          return _this.plupload.start();
         };
       })(this));
     };

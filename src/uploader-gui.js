@@ -38,7 +38,6 @@
             }
             _this.uploader.plupload.removeFile(file);
             _this.options.onUploadCancelled();
-            _this.uploader.runNextUpload();
             self = _this;
             return $(e.target).parents('.video-upload-row').fadeOut('normal', function() {
               $(this).remove();

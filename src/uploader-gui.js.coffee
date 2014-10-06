@@ -32,7 +32,6 @@ class window.VideoUploaderGui
           return false
         @uploader.plupload.removeFile(file)
         @options.onUploadCancelled()
-        @uploader.runNextUpload()
 
         self = this
         $(e.target).parents('.video-upload-row').fadeOut 'normal', ->

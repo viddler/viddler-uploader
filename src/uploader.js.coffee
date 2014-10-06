@@ -72,16 +72,6 @@ class window.VideoUploader
       else
         @options.onFailedFileUpload(file, responseJson)
 
-      @runNextUpload()
-
-
-  runNextUpload: ->
-    # Stop the uploader and make sure we have another token ready and then start again
-    @plupload.stop()
-    @getUploadTokenAndEndpoint (details)=>
-      @plupload.start()
-
-
   getFreshUploadTokenAndEndpoint: (callback)->
     url = "#{@options.apiEndPoint}?action=prepareUpload&nocache=#{Math.random()}"
     $.getJSON url, (details)=>
