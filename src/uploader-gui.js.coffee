@@ -5,7 +5,7 @@ class window.VideoUploaderGui
 
     @options.onUploadCancelled or= ->
     @options.listingContainerId     or= "uploaded-videos-listing-container"
-    @uploadVideoTemplate    = $("##{@options.listingContainerId} .upload-video-template")
+    @uploadVideoTemplate    = $(JST['src/templates.html']()).find('tmpl-video-upload-template')
 
     @averageUploadSpeedData = {}
 
