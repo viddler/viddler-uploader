@@ -8,21 +8,21 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          'src/upload.js': 'src/uploader.js.coffee',
-          'src/uploader-gui.js': 'src/uploader-gui.js.coffee',
+          'tmp/uploader.js': 'src/uploader.js.coffee',
+          'tmp/uploader-gui.js': 'src/uploader-gui.js.coffee',
         }
       }
     },
     handlebars: {
       compile: {
         src: 'src/templates.html',
-        dest: 'src/templates.html.js'
+        dest: 'tmp/templates.html.js'
       }
     },
     concat: {
       dist: {
-        src: ['src/upload.js', 'src/uploader-gui.js', 'src/lib/handlebars/handlebars.min.js',
-              'src/lib/plupload/js/plupload.full.min.js', 'src/templates.html.js'],
+        src: ['tmp/uploader.js', 'tmp/uploader-gui.js', 'src/lib/handlebars/handlebars.min.js',
+              'src/lib/plupload/js/plupload.full.min.js', 'tmp/templates.html.js'],
         dest: 'js/upload.js',
       }
     },
