@@ -71,7 +71,6 @@
           row.find(".status").html(statusText);
           progress_bar = row.find(".progress-bar");
           targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100));
-          console.log(targetWidth);
           if ((progress_bar.data('targetWidth') || 0) < targetWidth) {
             progress_bar.data('targetWidth', targetWidth);
             return progress_bar.animate({
