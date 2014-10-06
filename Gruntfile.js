@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     },
     handlebars: {
       compile: {
-        'src/templates.html': 'src/templates.html.js'
+        src: 'src/templates.html',
+        dest: 'src/templates.html.js'
       }
     },
     concat: {

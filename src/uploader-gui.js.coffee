@@ -5,7 +5,7 @@ class window.VideoUploaderGui
 
     @options.onUploadCancelled or= ->
     @options.listingContainerId     or= "uploaded-videos-listing-container"
-    @uploadVideoTemplate    = $(JST['src/templates.html']()).find('tmpl-video-upload-template')
+    @uploadVideoTemplate    = $( $(JST['src/templates.html']()).html() )
 
     @averageUploadSpeedData = {}
 
@@ -38,7 +38,7 @@ class window.VideoUploaderGui
           $(this).remove()
           self.uploader.fileUploadButton.trigger('resize')
 
-      @uploadVideoTemplate.after(row)
+      $('#' + @options.listingContainerId).append(row)
       row.addClass("uploading")
       row.show()
       row.trigger('resize')

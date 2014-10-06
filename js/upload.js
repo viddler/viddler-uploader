@@ -160,7 +160,7 @@
       this.options = options;
       (_base = this.options).onUploadCancelled || (_base.onUploadCancelled = function() {});
       (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
-      this.uploadVideoTemplate = $(JST['src/templates.html']()).find('tmpl-video-upload-template');
+      this.uploadVideoTemplate = $($(JST['src/templates.html']()).html());
       this.averageUploadSpeedData = {};
       this.addEventListeners();
     }
@@ -195,7 +195,7 @@
               return self.uploader.fileUploadButton.trigger('resize');
             });
           });
-          _this.uploadVideoTemplate.after(row);
+          $('#' + _this.options.listingContainerId).append(row);
           row.addClass("uploading");
           row.show();
           return row.trigger('resize');
@@ -370,5 +370,5 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<script type=\"text/template\" id=\"tmpl-video-upload-template\">\n  <div class=\"svi svi-progress upload-video-template\" style=\"display: none;\">\n    <div class=\"svi-icon\">\n    </div>\n\n    <div class=\"ljust\">\n      <h4 class=\"encode-title\"><span>Uploading:</span></h4>\n      <span class=\"status\">Queued for upload</span>\n    </div>\n\n    <div class=\"rjust\">\n      <a href=\"#\" class=\"red retry-encode\" style=\"display:none;\">Retry</a>\n      <a href=\"#\" class=\"red cancel-upload\" style=\"display:none;\">Cancel</a>\n    </div>\n\n    <ul>\n      <li>\n        <div class=\"progress-bar animated\">\n          <div class=\"progress-bar-inner\" style=\"width:0%\"></div>\n        </div>\n      </li>\n    </ul>\n  </div>\n</script>\n";
+  return "<script type=\"text/template\" id=\"tmpl-video-upload-template\">\n  <div class=\"video-upload-row upload-video-template\" style=\"display: none;\">\n    <div class=\"info\">\n      <p class=\"encode-title\"><span>Uploading:</span></p>\n      <span class=\"status\">Queued for upload</span>\n    </div>\n\n    <div class=\"actions\">\n      <a href=\"#\" class=\"cancel-upload\" style=\"display:none;\">Cancel</a>\n    </div>\n\n    <div class=\"progress\">\n      <div class=\"progress-bar\">\n        <div class=\"progress-bar-inner\" style=\"width: 0px\"></div>\n      </div>\n    </div>\n  </div>\n</script>\n";
   });

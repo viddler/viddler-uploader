@@ -9,7 +9,7 @@
       this.options = options;
       (_base = this.options).onUploadCancelled || (_base.onUploadCancelled = function() {});
       (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
-      this.uploadVideoTemplate = $(JST['src/templates.html']()).find('tmpl-video-upload-template');
+      this.uploadVideoTemplate = $($(JST['src/templates.html']()).html());
       this.averageUploadSpeedData = {};
       this.addEventListeners();
     }
@@ -44,7 +44,7 @@
               return self.uploader.fileUploadButton.trigger('resize');
             });
           });
-          _this.uploadVideoTemplate.after(row);
+          $('#' + _this.options.listingContainerId).append(row);
           row.addClass("uploading");
           row.show();
           return row.trigger('resize');
