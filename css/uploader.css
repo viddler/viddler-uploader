@@ -1,0 +1,28 @@
+#uploaded-videos-listing-container .video-upload-row {
+  background: #ddd;
+  padding: 10px;
+}
+#uploaded-videos-listing-container .status {
+  margin-bottom: 5px;
+  display: block;
+}
+#uploaded-videos-listing-container .actions {
+  float: right;
+  margin-top: 0px;
+}
+#uploaded-videos-listing-container .info {
+  float:left
+}
+#uploaded-videos-listing-container p {
+  margin-top: 0px;
+}
+#uploaded-videos-listing-container .progress {
+  height: 20px;
+  border: 1px solid black;
+  clear: both;
+}
+#uploaded-videos-listing-container .progress-bar {
+  background-color: #428bca;
+  height: 100%;
+  width: 0;
+}

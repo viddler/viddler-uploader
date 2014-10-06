@@ -3,9 +3,11 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Upload gui example</title>
+    <link rel="stylesheet" href="../css/uploader.css" type="text/css" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/upload.js"></script>
     <script type="text/javascript" charset="utf-8">
+
     $(document).ready(function() {
       function displayStatus(text) {
         var status = $('<p>').text(text);
@@ -35,37 +37,6 @@
     });
 
     </script>
-
-    <style type="text/css" media="all">
-    .video-upload-row {
-      background: #ddd;
-      padding: 10px;
-    }
-    .status {
-      margin-bottom: 5px;
-      display: block;
-    }
-    .actions {
-      float: right;
-      margin-top: 0px;
-    }
-    .info {
-      float:left
-    }
-    p {
-      margin-top: 0px;
-    }
-    .progress {
-      height: 20px;
-      border: 1px solid black;
-      clear: both;
-    }
-    .progress-bar {
-      background-color: #428bca;
-      height: 100%;
-      width: 0;
-    }
-    </style>
   </head>
 
   <body>
