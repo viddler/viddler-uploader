@@ -19,6 +19,6 @@
     "plupload": "~2.1.2",
     "underscore": "~1.7.0",
     "phpviddler": "git@github.com:viddler/phpviddler.git#~4.0.1",
-    "handlebars": "~2.0.0"
+    "handlebars": "1.3.0"
   }
 }
