@@ -24,7 +24,7 @@ class window.ViddlerVideoUploader
       @dragDropPanel.removeClass('dragover')
 
   initializeFileUpload: ->
-    runtimes = 'html5,flash'
+    runtimes = 'html5'
     @plupload = new plupload.Uploader
       runtimes : runtimes
       browse_button : @options.fileUploadButtonId

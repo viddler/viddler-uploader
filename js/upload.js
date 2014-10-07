@@ -40,7 +40,7 @@
 
     ViddlerVideoUploader.prototype.initializeFileUpload = function() {
       var runtimes;
-      runtimes = 'html5,flash';
+      runtimes = 'html5';
       this.plupload = new plupload.Uploader({
         runtimes: runtimes,
         browse_button: this.options.fileUploadButtonId,
