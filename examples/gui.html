@@ -9,12 +9,12 @@
     <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function() {
-      var uploader = new VideoUploader({
+      var uploader = new ViddlerVideoUploader({
         fileUploadButtonId: 'upload-link',
         apiEndPoint: '/server_components/php/index.php'
       });
 
-      var gui = new VideoUploaderGui({
+      var gui = new ViddlerVideoUploaderGui({
         uploader: uploader
       });
     });

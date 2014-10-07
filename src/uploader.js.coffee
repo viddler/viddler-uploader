@@ -1,4 +1,4 @@
-class window.VideoUploader
+class window.ViddlerVideoUploader
   constructor: (options={})->
     @options = options
 

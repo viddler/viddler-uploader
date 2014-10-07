@@ -1,6 +1,6 @@
 (function() {
-  window.VideoUploader = (function() {
-    function VideoUploader(options) {
+  window.ViddlerVideoUploader = (function() {
+    function ViddlerVideoUploader(options) {
       var _base, _base1, _base2;
       if (options == null) {
         options = {};
@@ -25,7 +25,7 @@
       this.eventHandlers = {};
     }
 
-    VideoUploader.prototype.setupEvents = function() {
+    ViddlerVideoUploader.prototype.setupEvents = function() {
       this.dragDropPanel.bind('dragover', (function(_this) {
         return function() {
           return _this.dragDropPanel.addClass('dragover');
@@ -38,7 +38,7 @@
       })(this));
     };
 
-    VideoUploader.prototype.initializeFileUpload = function() {
+    ViddlerVideoUploader.prototype.initializeFileUpload = function() {
       var runtimes;
       runtimes = 'html5,flash';
       this.plupload = new plupload.Uploader({
@@ -94,7 +94,7 @@
       })(this));
     };
 
-    VideoUploader.prototype.getFreshUploadTokenAndEndpoint = function(callback) {
+    ViddlerVideoUploader.prototype.getFreshUploadTokenAndEndpoint = function(callback) {
       var url;
       url = "" + this.options.apiEndPoint + "?action=prepareUpload&nocache=" + (Math.random());
       return $.getJSON(url, (function(_this) {
@@ -105,7 +105,7 @@
       })(this));
     };
 
-    VideoUploader.prototype.getUploadTokenAndEndpoint = function(callback) {
+    ViddlerVideoUploader.prototype.getUploadTokenAndEndpoint = function(callback) {
       if (this.uploadTokenAndEndpoint && this.uploadTokenAndEndpoint.token) {
         return callback(this.uploadTokenAndEndpoint);
       } else {
@@ -113,7 +113,7 @@
       }
     };
 
-    VideoUploader.prototype.getUploadTokenAndEndpointForNextRequest = function() {
+    ViddlerVideoUploader.prototype.getUploadTokenAndEndpointForNextRequest = function() {
       if (this.gettingSpareToken) {
         return;
       }
@@ -125,27 +125,27 @@
       })(this));
     };
 
-    VideoUploader.prototype.disableUploadButton = function() {
+    ViddlerVideoUploader.prototype.disableUploadButton = function() {
       this.disabled = true;
       return this.fileUploadButton.addClass('disabled');
     };
 
-    VideoUploader.prototype.reEnableUploadButton = function() {
+    ViddlerVideoUploader.prototype.reEnableUploadButton = function() {
       this.disabled = false;
       return this.fileUploadButton.removeClass('disabled');
     };
 
-    VideoUploader.prototype.tearDown = function() {
+    ViddlerVideoUploader.prototype.tearDown = function() {
       return this.plupload.destroy();
     };
 
-    VideoUploader.prototype.on = function(eventName, callback) {
+    ViddlerVideoUploader.prototype.on = function(eventName, callback) {
       var _base;
       (_base = this.eventHandlers)[eventName] || (_base[eventName] = []);
       return this.eventHandlers[eventName].push(callback);
     };
 
-    VideoUploader.prototype.trigger = function(eventName, params) {
+    ViddlerVideoUploader.prototype.trigger = function(eventName, params) {
       var callback, _base, _i, _len, _ref, _results;
       (_base = this.eventHandlers)[eventName] || (_base[eventName] = []);
       _ref = this.eventHandlers[eventName];
@@ -157,15 +157,15 @@
       return _results;
     };
 
-    return VideoUploader;
+    return ViddlerVideoUploader;
 
   })();
 
 }).call(this);
 
 (function() {
-  window.VideoUploaderGui = (function() {
-    function VideoUploaderGui(options) {
+  window.ViddlerVideoUploaderGui = (function() {
+    function ViddlerVideoUploaderGui(options) {
       var _base, _base1;
       if (options == null) {
         options = {};
@@ -179,7 +179,7 @@
       this.addEventListeners();
     }
 
-    VideoUploaderGui.prototype.addEventListeners = function() {
+    ViddlerVideoUploaderGui.prototype.addEventListeners = function() {
       $(document).on("click", ".remove-from-list", function(e) {
         var row;
         e.preventDefault();
@@ -262,7 +262,7 @@
       });
     };
 
-    VideoUploaderGui.prototype.distanceOfTimeInWords = function(seconds) {
+    ViddlerVideoUploaderGui.prototype.distanceOfTimeInWords = function(seconds) {
       var string, unit, value;
       if (seconds < 60) {
         unit = "second";
@@ -282,14 +282,14 @@
       return string;
     };
 
-    VideoUploaderGui.prototype.truncate = function(text, limit) {
+    ViddlerVideoUploaderGui.prototype.truncate = function(text, limit) {
       if (text.length > limit) {
         text = text.substr(0, limit - 3) + "...";
       }
       return text;
     };
 
-    VideoUploaderGui.prototype.averageUploadSpeed = function(uploadId, currentSpeed) {
+    ViddlerVideoUploaderGui.prototype.averageUploadSpeed = function(uploadId, currentSpeed) {
       var values, _base;
       values = (_base = this.averageUploadSpeedData)[uploadId] || (_base[uploadId] = []);
       if (values.length > 20) {
@@ -303,7 +303,7 @@
       }
     };
 
-    VideoUploaderGui.prototype.mean = function(array) {
+    ViddlerVideoUploaderGui.prototype.mean = function(array) {
       var sum;
       if (array.length === 0) {
         return 0;
@@ -314,7 +314,7 @@
       return sum / array.length;
     };
 
-    return VideoUploaderGui;
+    return ViddlerVideoUploaderGui;
 
   })();
 
