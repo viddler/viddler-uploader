@@ -4,10 +4,10 @@ class window.VideoUploader
 
     @options.fileUploadButtonId     or= "file-upload-button"
     @options.buttonContainerId      or= "upload-button-container"
-    @options.uploadMainPanelId      or= "upload-main-panel"
+    @options.dragDropPanelId        or= "drag-drop-panel"
 
     @fileUploadButton       = $("##{@options.fileUploadButtonId}")
-    @mainUploadPanel        = $("##{@options.uploadMainPanelId}")
+    @dragDropPanel          = $("##{@options.dragDropPanelId}")
     @uploadTokenAndEndpoint = {token: @fileUploadButton.attr("data-token"), endpoint: @fileUploadButton.attr("data-endpoint")}
     @getUploadTokenAndEndpointForNextRequest() unless @uploadTokenAndEndpoint.token
     @setupEvents()
@@ -18,10 +18,10 @@ class window.VideoUploader
     @eventHandlers = {}
 
   setupEvents: ->
-    @mainUploadPanel.bind 'dragover', =>
-      @mainUploadPanel.addClass('dragover')
-    @mainUploadPanel.bind 'dragleave drop', =>
-      @mainUploadPanel.removeClass('dragover')
+    @dragDropPanel.bind 'dragover', =>
+      @dragDropPanel.addClass('dragover')
+    @dragDropPanel.bind 'dragleave drop', =>
+      @dragDropPanel.removeClass('dragover')
 
   initializeFileUpload: ->
     runtimes = 'html5,flash'
@@ -34,7 +34,7 @@ class window.VideoUploader
       flash_swf_url: @fileUploadButton.data('swf-url')
       multipart: true
       multipart_params : {}
-      drop_element: @options.uploadMainPanelId
+      drop_element: @options.dragDropPanelId
 
 
     @plupload.init()

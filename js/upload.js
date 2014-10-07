@@ -8,9 +8,9 @@
       this.options = options;
       (_base = this.options).fileUploadButtonId || (_base.fileUploadButtonId = "file-upload-button");
       (_base1 = this.options).buttonContainerId || (_base1.buttonContainerId = "upload-button-container");
-      (_base2 = this.options).uploadMainPanelId || (_base2.uploadMainPanelId = "upload-main-panel");
+      (_base2 = this.options).dragDropPanelId || (_base2.dragDropPanelId = "drag-drop-panel");
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
-      this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
+      this.dragDropPanel = $("#" + this.options.dragDropPanelId);
       this.uploadTokenAndEndpoint = {
         token: this.fileUploadButton.attr("data-token"),
         endpoint: this.fileUploadButton.attr("data-endpoint")
@@ -26,14 +26,14 @@
     }
 
     VideoUploader.prototype.setupEvents = function() {
-      this.mainUploadPanel.bind('dragover', (function(_this) {
+      this.dragDropPanel.bind('dragover', (function(_this) {
         return function() {
-          return _this.mainUploadPanel.addClass('dragover');
+          return _this.dragDropPanel.addClass('dragover');
         };
       })(this));
-      return this.mainUploadPanel.bind('dragleave drop', (function(_this) {
+      return this.dragDropPanel.bind('dragleave drop', (function(_this) {
         return function() {
-          return _this.mainUploadPanel.removeClass('dragover');
+          return _this.dragDropPanel.removeClass('dragover');
         };
       })(this));
     };
@@ -49,7 +49,7 @@
         flash_swf_url: this.fileUploadButton.data('swf-url'),
         multipart: true,
         multipart_params: {},
-        drop_element: this.options.uploadMainPanelId
+        drop_element: this.options.dragDropPanelId
       });
       this.plupload.init();
       this.plupload.bind('FilesAdded', (function(_this) {
