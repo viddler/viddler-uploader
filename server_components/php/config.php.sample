@@ -2,4 +2,5 @@
 define('VIDDLER_USERNAME', 'yourusername');
 define('VIDDLER_PASSWORD', 'yourpassword');
 define('VIDDLER_API_KEY', 'yourapikey');
+define('VIDDLER_ALLOW_VIDEO_REPLACE', true);
 ?>

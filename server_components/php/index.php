@@ -7,6 +7,9 @@ $auth = $v->viddler_users_auth(array('user' => VIDDLER_USERNAME, 'password' => V
 
 if($_GET['action'] == 'prepareUpload') {
   $params = array('sessionid' => $auth['auth']['sessionid']);
+  if(VIDDLER_ALLOW_VIDEO_REPLACE) {
+    $params['allow_replace'] = true;
+  }
   $response = $v->viddler_videos_prepareUpload($params);
   header('Content-Type: application/json');
 

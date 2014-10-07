@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Upload library example</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/upload.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      function displayStatus(text) {
+        var status = $('<p>').text(text);
+        $('#status-log').append(status);
+      }
+
+      var uploader = new ViddlerVideoUploader({
+        fileUploadButtonId: 'upload-link',
+        apiEndPoint: '/server_components/php/index.php',
+        postParams: {video_id: 'c4e16bd4'}
+      });
+
+      uploader.on('select', function(file){
+        displayStatus('User has selected ' + file.name);
+      });
+
+      uploader.on('successfulFileUpload', function(file, video){
+        displayStatus('the file has been uploaded successfully. ID: ' + video.id);
+      });
+
+      uploader.on('failedFileUpload', function(file, response){
+        displayStatus('the file has been uploaded successfully');
+      });
+
+      uploader.on('uploadProgress', function(up, file){
+        displayStatus('Uploading file: percent: '+ file.percent + ' ; bytes per second: ' + up.total.bytesPerSec );
+      });
+    });
+
+    </script>
+  </head>
+
+  <body>
+    <div id="upload-main-panel">
+      <div id="upload-button-container">
+        <a id="upload-link">Upload</a>
+      </div>
+    </div>
+
+    <p id="status-log"></p>
+  </body>
+</html>

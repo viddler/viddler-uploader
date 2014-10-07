@@ -14,6 +14,7 @@ To initialize an uploader call new ViddlerVideoUploader with a object of setting
   * `buttonContainerId`  - The dom id of a container that the button is in. The library adds some content to this container
   * `dragDropPanelId` - The dom id of a container that will be used to handle drag and drop uploads
   * `apiEndPoint` - The endpoint of the webservice that will make API calls on the uploaders behalf
+  * `postParams` - Object of key/values for additional fields to sent to the upload node for example {title: 'My video'}. Also see replacable section below
 
 ### Add event listeners
 To add an event listener, call the `on` function of your uploader, the first parameter should be the event name, the second parameter should be a callback function that will be triggered when the event fires. See examples/library.html for an example. The possible events are:
@@ -68,3 +69,10 @@ Remote Demos
 Dependencies
 ------------
 jQuery is required to be available on the page used by the library
+
+Replacable video
+----------------
+Ability to replace a video relies on doing 2 different things:
+
+1. Pass allow_replace=true in the call to viddler.videos.prepareUpload. The php example will do this if the VIDDLER_ALLOW_VIDEO_REPLACE constant in your configuration is set to true
+2. When posting the video file to the upload endpoint, include an additional multipart field called video_id. The value of which should be the id of the video you want to replace. You can use the postParams key in your initialization of the ViddlerVideoUploader to set any additional fields. See examples/replace.html for a demo of this.

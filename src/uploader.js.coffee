@@ -33,7 +33,7 @@ class window.ViddlerVideoUploader
       url: 'http://temp'
       flash_swf_url: @fileUploadButton.data('swf-url')
       multipart: true
-      multipart_params : {}
+      multipart_params : @options.postParams || {}
       drop_element: @options.dragDropPanelId
 
 

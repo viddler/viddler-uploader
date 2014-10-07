@@ -48,7 +48,7 @@
         url: 'http://temp',
         flash_swf_url: this.fileUploadButton.data('swf-url'),
         multipart: true,
-        multipart_params: {},
+        multipart_params: this.options.postParams || {},
         drop_element: this.options.dragDropPanelId
       });
       this.plupload.init();
