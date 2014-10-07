@@ -15,18 +15,22 @@
       var uploader = new VideoUploader({
         fileUploadButtonId: 'upload-link',
         apiEndPoint: '/server_components/php/index.php',
-        onSelect: function(file) {
-          displayStatus('User has selected ' + file.name);
-        },
-        onSuccessfulFileUpload: function(file, video) {
-          displayStatus('the file has been uploaded successfully. ID: ' + video.id);
-        },
-        onFailedFileUpload: function(file, response) {
-          displayStatus('the file has been uploaded successfully');
-        },
-        onUploadProgress: function(up, file) {
-          displayStatus('Uploading file: percent: '+ file.percent + ' ; bytes per second: ' + up.total.bytesPerSec );
-        },
+      });
+
+      uploader.on('select', function(file){
+        displayStatus('User has selected ' + file.name);
+      });
+
+      uploader.on('successfullFileUpload', function(file, video){
+        displayStatus('the file has been uploaded successfully. ID: ' + video.id);
+      });
+
+      uploader.on('failedFileUpload', function(file, response){
+        displayStatus('the file has been uploaded successfully');
+      });
+
+      uploader.on('uploadProgress', function(up, file){
+        displayStatus('Uploading file: percent: '+ file.percent + ' ; bytes per second: ' + up.total.bytesPerSec );
       });
     });
 

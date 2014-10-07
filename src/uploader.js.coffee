@@ -5,11 +5,6 @@ class window.VideoUploader
     @options.fileUploadButtonId     or= "file-upload-button"
     @options.buttonContainerId      or= "upload-button-container"
     @options.uploadMainPanelId      or= "upload-main-panel"
-    @options.onSuccessfulFileUpload or= (file, video)->
-    @options.onFailedFileUpload     or= (file, response)->
-    @options.onUploadProgress       or= (up, file)->
-    @options.onSelect               or= (file)->
-    @options.onUploadCancelled      or= (row)->
 
     @fileUploadButton       = $("##{@options.fileUploadButtonId}")
     @mainUploadPanel        = $("##{@options.uploadMainPanelId}")
@@ -20,6 +15,7 @@ class window.VideoUploader
 
     @tornDown = false
     @disabled = false
+    @eventHandlers = {}
 
   setupEvents: ->
     @mainUploadPanel.bind 'dragover', =>
@@ -50,7 +46,7 @@ class window.VideoUploader
           @plupload.removeFile(file)
           return
 
-        @options.onSelect(file)
+        @trigger('select', [file])
       @plupload.start() if @uploadTokenAndEndpoint
 
 
@@ -62,15 +58,15 @@ class window.VideoUploader
 
 
     @plupload.bind 'UploadProgress', (up, file)=>
-      @options.onUploadProgress(up, file)
+      @trigger('uploadProgress', [up, file])
 
     @plupload.bind 'FileUploaded', (up, file, responseObj)=>
       responseJson = JSON.parse(responseObj.response)
 
       if responseJson.video
-        @options.onSuccessfulFileUpload(file, responseJson.video)
+        @trigger('successfullFileUpload', [file, responseJson.video])
       else
-        @options.onFailedFileUpload(file, responseJson)
+        @trigger('failedFileUpload', [file, responseJson])
 
   getFreshUploadTokenAndEndpoint: (callback)->
     url = "#{@options.apiEndPoint}?action=prepareUpload&nocache=#{Math.random()}"
@@ -103,3 +99,14 @@ class window.VideoUploader
   # Cancel any existing uploads, stop any recurring processes
   tearDown: ->
     @plupload.destroy()
+
+  # Register an event callback
+  on: (eventName, callback)->
+    @eventHandlers[eventName] ||= []
+    @eventHandlers[eventName].push callback
+
+  trigger: (eventName, params)->
+    @eventHandlers[eventName] ||= []
+    for callback in @eventHandlers[eventName]
+      callback.apply(this, params)
+

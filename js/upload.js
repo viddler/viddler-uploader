@@ -1,7 +1,7 @@
 (function() {
   window.VideoUploader = (function() {
     function VideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4, _base5, _base6, _base7;
+      var _base, _base1, _base2;
       if (options == null) {
         options = {};
       }
@@ -9,11 +9,6 @@
       (_base = this.options).fileUploadButtonId || (_base.fileUploadButtonId = "file-upload-button");
       (_base1 = this.options).buttonContainerId || (_base1.buttonContainerId = "upload-button-container");
       (_base2 = this.options).uploadMainPanelId || (_base2.uploadMainPanelId = "upload-main-panel");
-      (_base3 = this.options).onSuccessfulFileUpload || (_base3.onSuccessfulFileUpload = function(file, video) {});
-      (_base4 = this.options).onFailedFileUpload || (_base4.onFailedFileUpload = function(file, response) {});
-      (_base5 = this.options).onUploadProgress || (_base5.onUploadProgress = function(up, file) {});
-      (_base6 = this.options).onSelect || (_base6.onSelect = function(file) {});
-      (_base7 = this.options).onUploadCancelled || (_base7.onUploadCancelled = function(row) {});
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.mainUploadPanel = $("#" + this.options.uploadMainPanelId);
       this.uploadTokenAndEndpoint = {
@@ -27,6 +22,7 @@
       this.initializeFileUpload();
       this.tornDown = false;
       this.disabled = false;
+      this.eventHandlers = {};
     }
 
     VideoUploader.prototype.setupEvents = function() {
@@ -63,7 +59,7 @@
               _this.plupload.removeFile(file);
               return;
             }
-            return _this.options.onSelect(file);
+            return _this.trigger('select', [file]);
           });
           if (_this.uploadTokenAndEndpoint) {
             return _this.plupload.start();
@@ -82,7 +78,7 @@
       })(this));
       this.plupload.bind('UploadProgress', (function(_this) {
         return function(up, file) {
-          return _this.options.onUploadProgress(up, file);
+          return _this.trigger('uploadProgress', [up, file]);
         };
       })(this));
       return this.plupload.bind('FileUploaded', (function(_this) {
@@ -90,9 +86,9 @@
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
           if (responseJson.video) {
-            return _this.options.onSuccessfulFileUpload(file, responseJson.video);
+            return _this.trigger('successfullFileUpload', [file, responseJson.video]);
           } else {
-            return _this.options.onFailedFileUpload(file, responseJson);
+            return _this.trigger('failedFileUpload', [file, responseJson]);
           }
         };
       })(this));
@@ -141,6 +137,24 @@
 
     VideoUploader.prototype.tearDown = function() {
       return this.plupload.destroy();
+    };
+
+    VideoUploader.prototype.on = function(eventName, callback) {
+      var _base;
+      (_base = this.eventHandlers)[eventName] || (_base[eventName] = []);
+      return this.eventHandlers[eventName].push(callback);
+    };
+
+    VideoUploader.prototype.trigger = function(eventName, params) {
+      var callback, _base, _i, _len, _ref, _results;
+      (_base = this.eventHandlers)[eventName] || (_base[eventName] = []);
+      _ref = this.eventHandlers[eventName];
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        callback = _ref[_i];
+        _results.push(callback.apply(this, params));
+      }
+      return _results;
     };
 
     return VideoUploader;
