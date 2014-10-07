@@ -6,6 +6,8 @@ class window.ViddlerVideoUploader
     @options.buttonContainerId      or= "upload-button-container"
     @options.dragDropPanelId        or= "drag-drop-panel"
 
+    @options.postParams or= {}
+
     @fileUploadButton       = $("##{@options.fileUploadButtonId}")
     @dragDropPanel          = $("##{@options.dragDropPanelId}")
     @uploadTokenAndEndpoint = {token: @fileUploadButton.attr("data-token"), endpoint: @fileUploadButton.attr("data-endpoint")}
@@ -33,7 +35,7 @@ class window.ViddlerVideoUploader
       url: 'http://temp'
       flash_swf_url: @fileUploadButton.data('swf-url')
       multipart: true
-      multipart_params : @options.postParams || {}
+      multipart_params : @options.postParams
       drop_element: @options.dragDropPanelId
 
 
