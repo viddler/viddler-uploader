@@ -45,6 +45,7 @@ In addition to e ViddlerVideoUploader firing the events listed above. There will
 Server Side Component
 ---------------------
 The server side script should accept an `action` Parameter, which currently will only have a value of "prepareUpload". This script should then:
+
 1. Authenticate with the API on your behalf
 2. Call viddler.videos.prepareUpload to get the token details
 3. Return that response in json format
