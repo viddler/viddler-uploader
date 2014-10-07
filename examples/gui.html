@@ -9,26 +9,9 @@
     <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function() {
-      function displayStatus(text) {
-        var status = $('<p>').text(text);
-        $('#status-log').append(status);
-      }
-
       var uploader = new VideoUploader({
         fileUploadButtonId: 'upload-link',
-        apiEndPoint: '/server_components/php/index.php',
-        //onSelect: function(file) {
-        //  displayStatus('User has selected ' + file.name);
-        //},
-        //onSuccessfulFileUpload: function(file, video) {
-        //  displayStatus('the file has been uploaded successfully. ID: ' + video.id);
-        //},
-        //onFailedFileUpload: function(file, response) {
-        //  displayStatus('the file has been uploaded successfully');
-        //},
-        //onUploadProgress: function(up, file) {
-        //  displayStatus('Uploading file: percent: '+ file.percent + ' ; bytes per second: ' + up.total.bytesPerSec );
-        //},
+        apiEndPoint: '/server_components/php/index.php'
       });
 
       var gui = new VideoUploaderGui({
@@ -48,7 +31,5 @@
 
     <div id="uploaded-videos-listing-container">
     </div>
-
-    <p id="status-log"></p>
   </body>
 </html>
