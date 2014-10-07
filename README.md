@@ -59,6 +59,11 @@ Getting the demo running
 3. Visit http://localhost:8000/examples/library.html to see an example of ViddlerVideoUploader being used with event listeners to show the status
 4. Visit to see an example of ViddlerVideoUploaderGui being used along with the default css file for styling
 
+Remote Demos
+------------
+http://viddler-uploader-demo.herokuapp.com/examples/library.html
+http://viddler-uploader-demo.herokuapp.com/examples/gui.html
+
 Dependencies
 ------------
 jQuery is required to be available on the page used by the library
