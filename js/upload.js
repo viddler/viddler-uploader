@@ -1,7 +1,7 @@
 (function() {
   window.ViddlerVideoUploader = (function() {
     function ViddlerVideoUploader(options) {
-      var _base, _base1, _base2, _base3;
+      var _base, _base1, _base2, _base3, _base4;
       if (options == null) {
         options = {};
       }
@@ -10,6 +10,7 @@
       (_base1 = this.options).buttonContainerId || (_base1.buttonContainerId = "upload-button-container");
       (_base2 = this.options).dragDropPanelId || (_base2.dragDropPanelId = "drag-drop-panel");
       (_base3 = this.options).postParams || (_base3.postParams = {});
+      (_base4 = this.options).runtimes || (_base4.runtimes = "html5");
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.dragDropPanel = $("#" + this.options.dragDropPanelId);
       this.uploadTokenAndEndpoint = {
@@ -40,10 +41,8 @@
     };
 
     ViddlerVideoUploader.prototype.initializeFileUpload = function() {
-      var runtimes;
-      runtimes = 'html5';
       this.plupload = new plupload.Uploader({
-        runtimes: runtimes,
+        runtimes: this.options.runtimes,
         browse_button: this.options.fileUploadButtonId,
         container: this.options.buttonContainerId,
         url: 'http://temp',

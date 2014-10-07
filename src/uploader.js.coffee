@@ -6,7 +6,8 @@ class window.ViddlerVideoUploader
     @options.buttonContainerId      or= "upload-button-container"
     @options.dragDropPanelId        or= "drag-drop-panel"
 
-    @options.postParams or= {}
+    @options.postParams             or= {}
+    @options.runtimes               or= "html5"
 
     @fileUploadButton       = $("##{@options.fileUploadButtonId}")
     @dragDropPanel          = $("##{@options.dragDropPanelId}")
@@ -26,9 +27,8 @@ class window.ViddlerVideoUploader
       @dragDropPanel.removeClass('dragover')
 
   initializeFileUpload: ->
-    runtimes = 'html5'
     @plupload = new plupload.Uploader
-      runtimes : runtimes
+      runtimes : @options.runtimes
       browse_button : @options.fileUploadButtonId
       container: @options.buttonContainerId
       #url: @uploadTokenAndEndpoint.endpoint
