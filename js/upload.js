@@ -86,7 +86,7 @@
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
           if (responseJson.video) {
-            return _this.trigger('successfullFileUpload', [file, responseJson.video]);
+            return _this.trigger('successfulFileUpload', [file, responseJson.video]);
           } else {
             return _this.trigger('failedFileUpload', [file, responseJson]);
           }

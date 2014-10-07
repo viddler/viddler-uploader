@@ -64,7 +64,7 @@ class window.VideoUploader
       responseJson = JSON.parse(responseObj.response)
 
       if responseJson.video
-        @trigger('successfullFileUpload', [file, responseJson.video])
+        @trigger('successfulFileUpload', [file, responseJson.video])
       else
         @trigger('failedFileUpload', [file, responseJson])
 
