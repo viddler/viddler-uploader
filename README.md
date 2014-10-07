@@ -57,7 +57,7 @@ Getting the demo running
 1. Copy server_components/php/config.php.sample to server_components/php/config.php and enter your credentials
 2. Start a php server from the root folder `php -S localhost:8000` - All being well you should be able to request http://localhost:8000/server_components/php/index.php?action=prepareUpload and see details of an upload token from the api
 3. Visit http://localhost:8000/examples/library.html to see an example of ViddlerVideoUploader being used with event listeners to show the status
-4. Visit to see an example of ViddlerVideoUploaderGui being used along with the default css file for styling
+4. Visit http://localhost:8000/examples/gui.html to see an example of ViddlerVideoUploaderGui being used along with the default css file for styling
 
 Remote Demos
 ------------
