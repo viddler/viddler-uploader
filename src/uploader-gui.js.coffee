@@ -3,7 +3,6 @@ class window.ViddlerVideoUploaderGui
     @uploader = options.uploader
     @options = options
 
-    @options.onUploadCancelled or= ->
     @options.listingContainerId     or= "uploaded-videos-listing-container"
     @uploadVideoTemplate    = $( $(JST['src/templates.html']()).html() )
 
@@ -31,7 +30,7 @@ class window.ViddlerVideoUploaderGui
         if !confirm("Are you sure you want to cancel this upload?")
           return false
         @uploader.plupload.removeFile(file)
-        @options.onUploadCancelled()
+        @uploader.trigger('uploadCancelled', file)
 
         self = this
         $(e.target).parents('.video-upload-row').fadeOut 'normal', ->

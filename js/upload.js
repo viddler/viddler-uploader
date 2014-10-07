@@ -166,14 +166,13 @@
 (function() {
   window.ViddlerVideoUploaderGui = (function() {
     function ViddlerVideoUploaderGui(options) {
-      var _base, _base1;
+      var _base;
       if (options == null) {
         options = {};
       }
       this.uploader = options.uploader;
       this.options = options;
-      (_base = this.options).onUploadCancelled || (_base.onUploadCancelled = function() {});
-      (_base1 = this.options).listingContainerId || (_base1.listingContainerId = "uploaded-videos-listing-container");
+      (_base = this.options).listingContainerId || (_base.listingContainerId = "uploaded-videos-listing-container");
       this.uploadVideoTemplate = $($(JST['src/templates.html']()).html());
       this.averageUploadSpeedData = {};
       this.addEventListeners();
@@ -202,7 +201,7 @@
               return false;
             }
             _this.uploader.plupload.removeFile(file);
-            _this.options.onUploadCancelled();
+            _this.uploader.trigger('uploadCancelled', file);
             self = _this;
             return $(e.target).parents('.video-upload-row').fadeOut('normal', function() {
               $(this).remove();
