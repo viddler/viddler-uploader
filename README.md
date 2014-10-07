@@ -61,8 +61,9 @@ Getting the demo running
 
 Remote Demos
 ------------
-http://viddler-uploader-demo.herokuapp.com/examples/library.html
-http://viddler-uploader-demo.herokuapp.com/examples/gui.html
+
+* http://viddler-uploader-demo.herokuapp.com/examples/library.html
+* http://viddler-uploader-demo.herokuapp.com/examples/gui.html
 
 Dependencies
 ------------
