@@ -186,7 +186,7 @@
         row = $(this).parents(".video-upload-row");
         return row.hide("slow");
       });
-      this.uploader.options.onSelect = (function(_this) {
+      this.uploader.on('select', (function(_this) {
         return function(file) {
           var cancel_link, fileName, row;
           fileName = _this.truncate(file.name, 50);
@@ -214,8 +214,8 @@
           row.show();
           return row.trigger('resize');
         };
-      })(this);
-      this.uploader.options.onUploadProgress = (function(_this) {
+      })(this));
+      this.uploader.on('uploadProgress', (function(_this) {
         return function(up, file) {
           var averageSpeed, bytesRemaining, percentage, progress_bar, row, secondsRemaining, speed, statusText, targetWidth;
           percentage = file.percent;
@@ -242,8 +242,8 @@
             }, 100);
           }
         };
-      })(this);
-      this.uploader.options.onSuccessfulFileUpload = (function(_this) {
+      })(this));
+      this.uploader.on('successfulFileUpload', (function(_this) {
         return function(file, video) {
           var message, row;
           row = $("#upload-" + file.id);
@@ -252,14 +252,14 @@
           row.find(".status").html(message);
           return row.find('.cancel-upload').hide();
         };
-      })(this);
-      return this.uploader.options.onFailedFileUpload = function(file, response) {
+      })(this));
+      return this.uploader.on('failedFileUpload', function(file, response) {
         var message, row;
         row = $("#upload-" + file.id);
         message = "Upload failed - " + response.error.details;
         row.find('.progress-bar').width('0%');
         return row.find(".status").html(message);
-      };
+      });
     };
 
     VideoUploaderGui.prototype.distanceOfTimeInWords = function(seconds) {

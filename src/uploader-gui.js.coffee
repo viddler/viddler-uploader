@@ -17,7 +17,7 @@ class window.VideoUploaderGui
       row = $(this).parents(".video-upload-row")
       row.hide("slow")
 
-    @uploader.options.onSelect = (file)=>
+    @uploader.on 'select', (file)=>
       fileName = @truncate(file.name, 50)
       row = @uploadVideoTemplate.clone()
       row.attr("id", "upload-#{file.id}")
@@ -43,7 +43,7 @@ class window.VideoUploaderGui
       row.show()
       row.trigger('resize')
 
-    @uploader.options.onUploadProgress = (up, file)=>
+    @uploader.on 'uploadProgress', (up, file)=>
       percentage = file.percent
       speed      = up.total.bytesPerSec
       row = $("#upload-#{file.id}")
@@ -66,7 +66,7 @@ class window.VideoUploaderGui
           width: targetWidth
         }, 100)
 
-    @uploader.options.onSuccessfulFileUpload = (file, video)=>
+    @uploader.on 'successfulFileUpload', (file, video)=>
       row = $("#upload-#{file.id}")
       row.attr("data-video-id", video.id)
       message = "Upload Complete"
@@ -74,7 +74,7 @@ class window.VideoUploaderGui
       row.find('.cancel-upload').hide()
 
 
-    @uploader.options.onFailedFileUpload = (file, response)->
+    @uploader.on 'failedFileUpload', (file, response)->
       row = $("#upload-#{file.id}")
       message = "Upload failed - #{response.error.details}"
       row.find('.progress-bar').width('0%')
