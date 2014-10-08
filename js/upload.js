@@ -1,7 +1,7 @@
 (function() {
   window.ViddlerVideoUploader = (function() {
     function ViddlerVideoUploader(options) {
-      var _base, _base1, _base2, _base3, _base4;
+      var _base, _base1, _base2, _base3, _base4, _base5, _base6;
       if (options == null) {
         options = {};
       }
@@ -11,6 +11,12 @@
       (_base2 = this.options).dragDropPanelId || (_base2.dragDropPanelId = "drag-drop-panel");
       (_base3 = this.options).postParams || (_base3.postParams = {});
       (_base4 = this.options).runtimes || (_base4.runtimes = "html5");
+      if ((_base5 = this.options).autostart == null) {
+        _base5.autostart = true;
+      }
+      if ((_base6 = this.options).multi_selection == null) {
+        _base6.multi_selection = true;
+      }
       this.fileUploadButton = $("#" + this.options.fileUploadButtonId);
       this.dragDropPanel = $("#" + this.options.dragDropPanelId);
       this.uploadTokenAndEndpoint = {
@@ -49,7 +55,8 @@
         flash_swf_url: this.fileUploadButton.data('swf-url'),
         multipart: true,
         multipart_params: this.options.postParams,
-        drop_element: this.options.dragDropPanelId
+        drop_element: this.options.dragDropPanelId,
+        multi_selection: this.options.multi_selection
       });
       this.plupload.init();
       this.plupload.bind('FilesAdded', (function(_this) {
@@ -61,8 +68,8 @@
             }
             return _this.trigger('select', [file]);
           });
-          if (_this.uploadTokenAndEndpoint) {
-            return _this.plupload.start();
+          if (_this.options.autostart && _this.uploadTokenAndEndpoint) {
+            return _this.start();
           }
         };
       })(this));
@@ -155,6 +162,10 @@
         _results.push(callback.apply(this, params));
       }
       return _results;
+    };
+
+    ViddlerVideoUploader.prototype.start = function() {
+      return this.plupload.start();
     };
 
     return ViddlerVideoUploader;

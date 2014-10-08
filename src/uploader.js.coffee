@@ -8,6 +8,8 @@ class window.ViddlerVideoUploader
 
     @options.postParams             or= {}
     @options.runtimes               or= "html5"
+    @options.autostart              ?= true
+    @options.multi_selection        ?= true
 
     @fileUploadButton       = $("##{@options.fileUploadButtonId}")
     @dragDropPanel          = $("##{@options.dragDropPanelId}")
@@ -37,6 +39,7 @@ class window.ViddlerVideoUploader
       multipart: true
       multipart_params : @options.postParams
       drop_element: @options.dragDropPanelId
+      multi_selection: @options.multi_selection
 
 
     @plupload.init()
@@ -49,7 +52,7 @@ class window.ViddlerVideoUploader
           return
 
         @trigger('select', [file])
-      @plupload.start() if @uploadTokenAndEndpoint
+      @start() if @options.autostart && @uploadTokenAndEndpoint
 
 
     @plupload.bind 'BeforeUpload', (up, file)=>
@@ -111,4 +114,7 @@ class window.ViddlerVideoUploader
     @eventHandlers[eventName] ||= []
     for callback in @eventHandlers[eventName]
       callback.apply(this, params)
+
+  start: ->
+    @plupload.start()
 

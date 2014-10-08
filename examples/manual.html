@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Manual start example</title>
+    <link rel="stylesheet" href="../css/uploader.css" type="text/css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/upload.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    $(document).ready(function() {
+      var startButton = $('#start-button');
+      var uploader = new ViddlerVideoUploader({
+        fileUploadButtonId: 'upload-link',
+        apiEndPoint: '/server_components/php/index.php',
+        autostart: false,
+        multi_selection: false
+      });
+
+      uploader.on('select', function() {
+        startButton.show();
+        uploader.disableUploadButton();
+      });
+      uploader.on('successfulFileUpload', function() {
+        startButton.hide();
+        uploader.reEnableUploadButton();
+      });
+
+      startButton.on('click', function() {
+        uploader.start();
+      });
+
+      var gui = new ViddlerVideoUploaderGui({
+        uploader: uploader
+      });
+    });
+
+    </script>
+  </head>
+
+  <body>
+    <p>With this demo, you can only choose 1 file at a time. You have to manually trigger the start of the upload</p>
+    <div id="drag-drop-panel">
+      <div id="upload-button-container">
+        Drag files here to upload or <a id="upload-link">click here</a>
+      </div>
+    </div>
+
+    <a id="start-button" style="display: none">Start Upload</a>
+
+    <div id="uploaded-videos-listing-container">
+    </div>
+  </body>
+</html>

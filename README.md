@@ -15,6 +15,8 @@ To initialize an uploader call new ViddlerVideoUploader with a object of setting
   * `dragDropPanelId` - The dom id of a container that will be used to handle drag and drop uploads
   * `apiEndPoint` - The endpoint of the webservice that will make API calls on the uploaders behalf
   * `postParams` - Object of key/values for additional fields to sent to the upload node for example {title: 'My video'}. Also see replacable section below
+  * `autostart` - Set this to false if you want the user to be able to start the upload after choosing the file or you want to programatically decide when is appropriate. Call `start()` on the uploader when the upload should begin (default true)
+  * `multi_selection` - this is a plupload setting that only allows you to choose many files at one time (default true)
 
 ### Add event listeners
 To add an event listener, call the `on` function of your uploader, the first parameter should be the event name, the second parameter should be a callback function that will be triggered when the event fires. See examples/library.html for an example. The possible events are:
@@ -65,6 +67,7 @@ Remote Demos
 
 * http://viddler-uploader-demo.herokuapp.com/examples/library.html
 * http://viddler-uploader-demo.herokuapp.com/examples/gui.html
+* http://viddler-uploader-demo.herokuapp.com/examples/manual.html - shows the use of autostart and multi_selection settings
 
 Dependencies
 ------------
