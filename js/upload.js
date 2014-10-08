@@ -52,7 +52,7 @@
         browse_button: this.options.fileUploadButtonId,
         container: this.options.buttonContainerId,
         url: 'http://temp',
-        flash_swf_url: this.fileUploadButton.data('swf-url'),
+        flash_swf_url: this.options.flashSwfUrl,
         multipart: true,
         multipart_params: this.options.postParams,
         drop_element: this.options.dragDropPanelId,

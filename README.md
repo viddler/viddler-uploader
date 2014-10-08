@@ -17,6 +17,8 @@ To initialize an uploader call new ViddlerVideoUploader with a object of setting
   * `postParams` - Object of key/values for additional fields to sent to the upload node for example {title: 'My video'}. Also see replacable section below
   * `autostart` - Set this to false if you want the user to be able to start the upload after choosing the file or you want to programatically decide when is appropriate. Call `start()` on the uploader when the upload should begin (default true)
   * `multi_selection` - this is a plupload setting that only allows you to choose many files at one time (default true)
+  * `runtimes` - default is 'html5'. Pass 'html5,flash' if you want to have a flash fallback
+  * `flashSwfUrl` - if supporting a flash fallback, set this as the url to src/lib/plupload/js/Moxie.swf
 
 ### Add event listeners
 To add an event listener, call the `on` function of your uploader, the first parameter should be the event name, the second parameter should be a callback function that will be triggered when the event fires. See examples/library.html for an example. The possible events are:
