@@ -16,12 +16,12 @@
 #uploaded-videos-listing-container p {
   margin-top: 0px;
 }
-#uploaded-videos-listing-container .progress {
+#uploaded-videos-listing-container .progress-bar {
   height: 20px;
   border: 1px solid black;
   clear: both;
 }
-#uploaded-videos-listing-container .progress-bar {
+#uploaded-videos-listing-container .progress-bar-inner {
   background-color: #428bca;
   height: 100%;
   width: 0;

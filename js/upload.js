@@ -243,7 +243,7 @@
             }
           }
           row.find(".status").html(statusText);
-          progress_bar = row.find(".progress-bar");
+          progress_bar = row.find(".progress-bar-inner");
           targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100));
           if ((progress_bar.data('targetWidth') || 0) < targetWidth) {
             progress_bar.data('targetWidth', targetWidth);
@@ -394,5 +394,5 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
   
 
 
-  return "<script type=\"text/template\" id=\"tmpl-video-upload-template\">\n  <div class=\"video-upload-row upload-video-template\" style=\"display: none;\">\n    <div class=\"info\">\n      <p class=\"encode-title\"><span>Uploading:</span></p>\n      <span class=\"status\">Queued for upload</span>\n    </div>\n\n    <div class=\"actions\">\n      <a href=\"#\" class=\"cancel-upload\" style=\"display:none;\">Cancel</a>\n    </div>\n\n    <div class=\"progress\">\n      <div class=\"progress-bar\">\n        <div class=\"progress-bar-inner\" style=\"width: 0px\"></div>\n      </div>\n    </div>\n  </div>\n</script>\n";
+  return "<script type=\"text/template\" id=\"tmpl-video-upload-template\">\n  <div class=\"video-upload-row upload-video-template\" style=\"display: none;\">\n    <div class=\"info\">\n      <p class=\"encode-title\"><span>Uploading:</span></p>\n      <span class=\"status\">Queued for upload</span>\n    </div>\n\n    <div class=\"actions\">\n      <a href=\"#\" class=\"cancel-upload\" style=\"display:none;\">Cancel</a>\n    </div>\n\n    <div class=\"progress-bar\">\n      <div class=\"progress-bar-inner\" style=\"width: 0px\"></div>\n    </div>\n  </div>\n</script>\n";
   });

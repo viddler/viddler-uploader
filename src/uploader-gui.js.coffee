@@ -56,7 +56,7 @@ class window.ViddlerVideoUploaderGui
         else
           statusText = "Uploading"
       row.find(".status").html(statusText)
-      progress_bar = row.find(".progress-bar")
+      progress_bar = row.find(".progress-bar-inner")
       targetWidth = Math.round(progress_bar.parent().width() * (percentage / 100))
 
       if (progress_bar.data('targetWidth') || 0) < targetWidth
