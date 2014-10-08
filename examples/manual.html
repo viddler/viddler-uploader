@@ -14,16 +14,18 @@
         fileUploadButtonId: 'upload-link',
         apiEndPoint: '/server_components/php/index.php',
         autostart: false,
-        multi_selection: false
+        multi_selection: false,
+        postParams: {video_id: '68ecdfbd'}
       });
 
       uploader.on('select', function() {
         startButton.show();
         uploader.disableUploadButton();
       });
-      uploader.on('successfulFileUpload', function() {
+      uploader.on('successfulFileUpload', function(file, video) {
         startButton.hide();
         uploader.reEnableUploadButton();
+        alert('Got video id back from server of '+ video.id);
       });
 
       startButton.on('click', function() {
@@ -39,7 +41,10 @@
   </head>
 
   <body>
-    <p>With this demo, you can only choose 1 file at a time. You have to manually trigger the start of the upload</p>
+    <p>
+      With this demo, you can only choose 1 file at a time. You have to manually trigger the start of the upload.
+      It also sets a video id of 68ecdfbd in post params so it should always replace that video.
+    </p>
     <div id="drag-drop-panel">
       <div id="upload-button-container">
         Drag files here to upload or <a id="upload-link">click here</a>
