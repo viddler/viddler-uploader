@@ -32,6 +32,12 @@ To add an event listener, call the `on` function of your uploader, the first par
   1. The file
   2. An object for the response from the uploader. This will likely contain the reason for the failure
 
+### Methods available on the uploader
+* `start()` - call this to start the upload if autostart is set to false
+* `tearDown()` - call this to kill all uploads and remove the uploader instance
+* `disableUploadButton()` - call this to prevent the user being able to upload further videos
+* `reEnableUploadButton()` - call this to enable the button again after disabling
+
 
 ViddlerVideoUploaderGui
 -----------------------
