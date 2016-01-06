@@ -10,6 +10,9 @@ class window.ViddlerVideoUploaderGui
 
     @addEventListeners()
 
+    if @options.warnOnNavigateAwayWhenActiveUploads
+      @setupNavigateAwayWarning()
+
   addEventListeners: ->
     $(document).on "click", ".remove-from-list", (e)->
       e.preventDefault()
@@ -117,3 +120,8 @@ class window.ViddlerVideoUploaderGui
     return 0 if array.length is 0
     sum = array.reduce (s,i) -> s += i
     sum / array.length
+
+  setupNavigateAwayWarning: ->
+    window.onbeforeunload = =>
+      if @uploader.plupload.total.queued > 0
+        return "You have uploads in progress that will be cancelled if you leave this page. Are you sure you want to navigate away?"

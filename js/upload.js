@@ -187,6 +187,9 @@
       this.uploadVideoTemplate = $($(JST['src/templates.html']()).html());
       this.averageUploadSpeedData = {};
       this.addEventListeners();
+      if (this.options.warnOnNavigateAwayWhenActiveUploads) {
+        this.setupNavigateAwayWarning();
+      }
     }
 
     ViddlerVideoUploaderGui.prototype.addEventListeners = function() {
@@ -322,6 +325,16 @@
         return s += i;
       });
       return sum / array.length;
+    };
+
+    ViddlerVideoUploaderGui.prototype.setupNavigateAwayWarning = function() {
+      return window.onbeforeunload = (function(_this) {
+        return function() {
+          if (_this.uploader.plupload.total.queued > 0) {
+            return "You have uploads in progress that will be cancelled if you leave this page. Are you sure you want to navigate away?";
+          }
+        };
+      })(this);
     };
 
     return ViddlerVideoUploaderGui;

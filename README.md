@@ -46,6 +46,7 @@ ViddlerVideoUploaderGui
 To initializer the GUI. call new ViddlerVideoUploaderGui with an object which should contain:
 * listingContainerId - The do id of the container where the Gui will show upload progress
 * uploader - An instance of a ViddlerVideoUploader
+* warnOnNavigateAwayWhenActiveUploads - boolean (default false) - if true, user will be warned if they try to navigate away from the page while there are uploads active.
 
 ### Additional event listeners
 In addition to e ViddlerVideoUploader firing the events listed above. There will also be an additional possible event if you use the Gui. This is:
