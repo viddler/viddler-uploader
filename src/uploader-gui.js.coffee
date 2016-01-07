@@ -79,7 +79,7 @@ class window.ViddlerVideoUploaderGui
     @uploader.on 'failedFileUpload', (file, response)->
       row = $("#upload-#{file.id}")
       message = "Upload failed - #{response.error.details}"
-      row.find('.progress-bar').width('0%')
+      row.find('.progress-bar-inner').width('0%')
       row.find(".status").html(message)
 
   distanceOfTimeInWords: (seconds)->

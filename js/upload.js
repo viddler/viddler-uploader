@@ -270,7 +270,7 @@
         var message, row;
         row = $("#upload-" + file.id);
         message = "Upload failed - " + response.error.details;
-        row.find('.progress-bar').width('0%');
+        row.find('.progress-bar-inner').width('0%');
         return row.find(".status").html(message);
       });
     };
