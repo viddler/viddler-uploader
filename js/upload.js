@@ -88,7 +88,7 @@
           return _this.trigger('uploadProgress', [up, file]);
         };
       })(this));
-      return this.plupload.bind('FileUploaded', (function(_this) {
+      this.plupload.bind('FileUploaded', (function(_this) {
         return function(up, file, responseObj) {
           var responseJson;
           responseJson = JSON.parse(responseObj.response);
@@ -97,6 +97,11 @@
           } else {
             return _this.trigger('failedFileUpload', [file, responseJson]);
           }
+        };
+      })(this));
+      return this.plupload.bind('Error', (function(_this) {
+        return function(up, error) {
+          return _this.trigger('failedFileUpload', [error.file, error.response, error.message]);
         };
       })(this));
     };
@@ -266,10 +271,14 @@
           return row.find('.cancel-upload').hide();
         };
       })(this));
-      return this.uploader.on('failedFileUpload', function(file, response) {
+      return this.uploader.on('failedFileUpload', function(file, response, pluploadMessage) {
         var message, row;
         row = $("#upload-" + file.id);
-        message = "Upload failed - " + response.error.details;
+        if (response && response.error) {
+          message = "Upload failed - " + response.error.details;
+        } else {
+          message = "Upload failed - " + pluploadMessage;
+        }
         row.find('.progress-bar-inner').width('0%');
         return row.find(".status").html(message);
       });

@@ -76,9 +76,12 @@ class window.ViddlerVideoUploaderGui
       row.find('.cancel-upload').hide()
 
 
-    @uploader.on 'failedFileUpload', (file, response)->
+    @uploader.on 'failedFileUpload', (file, response, pluploadMessage)->
       row = $("#upload-#{file.id}")
-      message = "Upload failed - #{response.error.details}"
+      if(response && response.error)
+        message = "Upload failed - #{response.error.details}"
+      else
+        message = "Upload failed - #{pluploadMessage}"
       row.find('.progress-bar-inner').width('0%')
       row.find(".status").html(message)
 

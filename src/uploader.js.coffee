@@ -73,6 +73,9 @@ class window.ViddlerVideoUploader
       else
         @trigger('failedFileUpload', [file, responseJson])
 
+    @plupload.bind 'Error', (up, error)=>
+      @trigger('failedFileUpload', [error.file, error.response, error.message])
+
   getFreshUploadTokenAndEndpoint: (callback)->
     url = "#{@options.apiEndPoint}?action=prepareUpload&nocache=#{Math.random()}"
     $.getJSON url, (details)=>
